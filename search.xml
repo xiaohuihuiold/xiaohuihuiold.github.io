@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[计算机图形学(一)--DDA画线算法]]></title>
+    <url>%2F2019%2F03%2F31%2F%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6-%E4%B8%80-DDA%E7%94%BB%E7%BA%BF%E7%AE%97%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[DDA直线绘制算法&emsp;&emsp;DDA就是数值微分Digital Differential Analyzer)的简称。在一个坐标轴上以单位间隔对线段进行取样，从而确定另一个最靠近路径对应的整数值。 优点&emsp;&emsp;利用增量思想使得在确定直线中每个点的坐标时只进行一次加法运算 缺点&emsp;&emsp;由于直线的斜率($k={{y1-y0}\over{x1-x0}}$)有可能是小数，并且在计算出坐标后的值还得进行取整，所以此算法不利于硬件实现 算法思想直线方程斜截式&emsp;&emsp;($y=kx+b$)，其中k是斜率，b是直线在y轴上的截距，而斜率($k={\Delta y \over \Delta x}={{y1-y0}\over{x1-x0}}$) 假设&emsp;&emsp;现在需要画一条经过点$P_0(2,3)$和点$P_1(17,12)$的直线&emsp;&emsp;根据直线方程斜截式($y=kx+b$)，此时b=0，其中斜率($k={{y1-y0}\over{x1-x0}}={{12-3}\over{17-2}}=0.6$)，可以表示为：$y=0.6x$ 用图表示&emsp;&emsp;* 第0个点(2,3) 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 1 2 3 4 5 6 7 8 9 10 11 12 13 &emsp;&emsp;* 第1个点y=0.6x1=0.6，坐标x上加1、y加上0.6，取整后(3,4) 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 1 2 3 4 5 6 7 8 9 10 11 12 13 &emsp;&emsp;* 第2个点y=0.6x2=1.2，坐标x上加1、y加上1.2，取整后(4,4) 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 1 2 3 4 5 6 7 8 9 10 11 12 13 …… &emsp;&emsp;* 一直到第15个点y=0.6x15=9.0，坐标(17,12) 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 1 2 3 4 5 6 7 8 9 10 11 12 13 &emsp;&emsp;* 至此就完成了一条直线的绘制 增量&emsp;&emsp;可以看到，上面的方法可以快速的画出一条直线，不过还需要优化一下。之前说的DDA每次确定一个点只需要一次加法运算，但是这里却进行了一次乘法加上一次加法。&emsp;&emsp;可以看出来，这里的y就是每次斜率加上了上一次的y坐标：$yi=kx+b$下一个点表示为$y{i+1}=k(x+1)+b$$\qquad=kx+k+b$$\qquad=kx+b+k$可以看到这里的$kx+b$就等于$yi$所以$y{i+1}=y_i+k$ 算法实现 先声明一个画线的函数：x0：起点x坐标y0：起点y坐标x1：结束点x坐标y1：结束点y坐标 1234void dda(int x0,int y0,int x1,int y1)&#123; ......&#125; 当斜率$0&lt;|k|\leq1$时&emsp;&emsp;斜率小于等于1时可以直接通过递增x方向来计算出y的值，但如果斜率大于1就会出现点不连续的情况。 先计算两个坐标的x、y坐标差 123float dx=x1-x0;float dy=y1-y1;float y=y0; 然后根据($k={\Delta y \over \Delta x}$)求出斜率，注：dx为0的情况未考虑进去 1float k=dy/dx; 之前就已经推导出y的值其实就是每次都用斜率加上前一次的值，所以求y的代码可以这样写 1y+=k; 再使用循环来绘制所有点，由于这里是斜率小于等于1的情况，所以判断x0是否小于等于结束点的x1作为循环条件 1234for(;x0&lt;=x1;++x0)&#123; ......&#125; 再把求y值以及画点的代码添加进去 12345for(;x0&lt;=x1;++x0)&#123; drawPoint(x0,(int)(y+0.5)); y+=k;&#125; 完整代码如下 注：未考虑dx为0的情况 12345678910float dx=x1-x0;float dy=y1-y1;float y=y0;float k=dy/dx;for(;x0&lt;=x1;++x0)&#123; drawPoint(x0,(int)(y+0.5)); y+=k;&#125; 当斜率$|k|&gt;1$时&emsp;&emsp;斜率大于1时只需要把计算y值改成计算x值就行了，注意k=dx/dy，注：dy可能为0 完整代码如下 注：未考虑dy为0的情况 12345678910float dx=x1-x0;float dy=y1-y1;float x=x0;float k=dx/dy;for(;y0&lt;=y1;++y0)&#123; drawPoint((int)(x+0.5),y0); x+=k;&#125; 适用于任何斜率的方法&emsp;&emsp;由于上面两种都只针对特定的斜率以及特定的方向绘制直线，所以还得优化下 首先还是得先计算两个坐标的x、y的差 12float dx=x1-x0;float dy=y1-y1; 然后这里多了个steps变量，可以看作是绘制这条直线的点的数量。注：这里引入了math.h头文件用来获取绝对值 123456int steps=abs(y1-y0);// 这里是取绘制点数最多的值if(fabs(dx)&gt;fabs(dy)) steps=abs(x1-x0);// 注意：在这之后steps可能为0,// steps为0的话就只需要画一个起点就行了(这里未写出)，不需要再执行下面的代码 因为现在是两种情况都要考虑，所以就一次性计算出每一步(step)的x与y的增量 1234567// 先初始化两个坐标为起点float x=x0;float y=y0;// 然后定义两个x和y的增量变量// 分别用两点的x、y的差除与需要绘制的点数来获得每绘制结束一个点后需要前进多少float xinc=dx/steps;float yinc=dy/steps; 首先第一个点要自己绘制。注：这里引入了math.h头文件进行四舍五入操作 1drawPoint(round(x),round(y)); 剩下的点，绘制steps个就行了 1234for(int i=0;i&lt;steps;++i)&#123; ......&#125; 计算当前点的位置，直接x和y分别加上增量就行了 12x+=xinc;y+=yinc; 绘制点的方法不变，把这些放进循环里面 123456789for(int i=0;i&lt;steps;++i)&#123; // 注意这里需要放到本次循环开始 // 因为第一个点已经绘制了 x+=xinc; y+=yinc; drawPoint(round(x),round(y));&#125; 完整代码如下 注：未考虑steps为0的情况 123456789101112131415161718192021222324252627float dx=x1-x0;float dy=y1-y1;int steps=abs(y1-y0);// 这里是取绘制点数最多的值if(fabs(dx)&gt;fabs(dy)) steps=abs(x1-x0);// 先初始化两个坐标为起点float x=x0;float y=y0;// 然后定义两个x和y的增量变量// 分别用两点的x、y的差除与需要绘制的点数来获得每绘制结束一个点后需要前进多少float xinc=dx/steps;float yinc=dy/steps;// 绘制起点drawPoint(round(x),round(y));for(int i=0;i&lt;steps;++i)&#123; // 注意这里需要放到本次循环开始 // 因为第一个点已经绘制了 x+=xinc; y+=yinc; drawPoint(round(x),round(y));&#125; 代码地址dda.c 最后&emsp;&emsp;DDA的计算方法比直接套用直线方程的效率要高得多。虽然从一个乘法一个加法缩减到了一个加法，但是在进行计算中的浮点运算和取整依旧比较耗时。后面会接触绘制直线的其它算法。]]></content>
+      <categories>
+        <category>计算机图形</category>
+      </categories>
+      <tags>
+        <tag>OpenGL</tag>
+        <tag>C</tag>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Java多线程(二)--volatile]]></title>
+    <url>%2F2019%2F03%2F12%2FJava%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E4%BA%8C-volatile%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Java多线程(一)--synchronized]]></title>
+    <url>%2F2019%2F03%2F11%2FJava%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E4%B8%80-synchronized%2F</url>
+    <content type="text"><![CDATA[synchronized&emsp;&emsp;synchronized保证使用同一个对象锁的代码块在同一时间只能被一个线程执行。方法、对象、静态方法、class类锁都属于对象锁（Class对象是唯一的、全局的）方法：this对象对象：创建的对象静态方法：方法所在类的Class对象class类锁：Class对象 用法对象锁 代码块 &emsp;&emsp;如果只有一个obj对象，当线程1执行到synchronized代码块时，线程2想执行synchronized代码块的话要等obj的锁被释放，也就是线程1把synchronized代码块执行完成。因为这里使用的是同一个对象 12345Object obj=new Object(); synchronized(obj)&#123; ...&#125; 另一种写法是使用this，因为this指的是当前对象，所以和上面的意思一样 123synchronized(this)&#123; ...&#125; 方法直接加在普通方法上和synchronized(this)意思一样，直接使用当前对象加锁 123public synchronized void doSomething()&#123; ...&#125; 类锁 代码块&emsp;&emsp;因为所有class都含有一个Class对]象，并且在程序运行时是唯一的，所以就相对于使用的是同一个对象进行加锁 123synchronized(Main.class)&#123; ...&#125; 方法(static)&emsp;&emsp;synchronized修饰普通方法加锁的是方法所在对象，而在静态方法里面使用加锁的是方法所在的类的class对象，所以效果等同于类锁的代码块形式 123public synchronized static void doSomethong()&#123; ...&#125; 性质 不可中断只能等待另一个线程释放锁之后才能获取锁 可重入性质同一线程的外层获取锁之后，内层也可以再次获得锁，而不需要等待释放锁。避免了外层获取而内层不能获取，然后外层又因为内层阻塞释放不了锁而形成的死锁锁的粒度是线程 原理 可见性原理：解锁时把工作内存的共享变量值刷新到主内存，加锁时清空工作内存的共享变量值 加锁和释放锁使用monitor来实现 重入锁靠的加减monitor 当获得锁之后，monitor+1，当内部代码再次获取锁时，monitor再+1 内部代码执行完离开时，monitor-1，外层执行完成再次-1 当monitor等于0时说明锁已经被释放了,不等于0则其它尝试获取锁的线程会阻塞 加锁使用monitorenter，释放使用monitorexit可以通过反编译代码看到 先使用javac编译下面的代码 12345public void test()&#123; synchronized(this)&#123; ... &#125;&#125; 然后使用javap -verbose 类名获得汇编代码（这里截取部分反编译后的代码）可以看到3:处加锁使用的monitorenter以及5:处使用的monitorexit 123456789101112130: aload_01: dup2: astore_13: monitorenter4: aload_15: monitorexit6: goto 149: astore_210: aload_111: monitorexit12: aload_213: athrow14: return 缺点 效率低 锁的释放情况少 不可中断 获取锁不能设置超时 不够灵活 加锁和释放时机单一 每个锁只有单一的条件 无法知道锁的获取状态 注意点 锁对象不能为空，否则会报异常，因为加锁靠的是对象的monitor 作用域不要太大，否则可能效率低 避免死锁 使用推荐：并发包 &gt; synchronized &gt; Lock]]></content>
+      <categories>
+        <category>多线程</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Learn OpenGL(一)--简介与创建窗口]]></title>
+    <url>%2F2019%2F02%2F21%2FLearn-OpenGL-%E4%B8%80-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%88%9B%E5%BB%BA%E7%AA%97%E5%8F%A3%2F</url>
+    <content type="text"><![CDATA[![opengl_logo](opengl_logo.jpg) 代码Github地址 OpenGL 简介&emsp;&emsp;OpenGL是一个由Khronos Group维护的图形绘制的规范&emsp;&emsp;OpenGL规范规定了函数的执行、输出，但是具体的实现则是由库的开发者(通常指显卡生产商)来实现的，不同的库实现可能不一样&emsp;&emsp;OpenGL本质上是一个大状态机，通过改变上下文(context)的变量告诉OpenGL怎么绘图 创建窗口(GLFW)创建窗口可以使用GLUT，SDL，QT，GLFW等，这里我用的是GLFW GLFW&emsp;&emsp;GLFW是个开源的支持多个平台的库，支持OpenGL、Vulkan。提供创建窗口、事件接收等。 GLFW安装头文件添加 1#include &lt;GLFW\glfw3.h&gt; &emsp;&emsp;gcc 在编译时需要加入-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi，否则可能出现未定义的引用错误 待完成 GLAD&emsp;&emsp;因为OpenGL只是个规范，具体是由显卡驱动开发商决定，很多函数位置不能在编译时决定，自己来取得地址的话会导致代码很复杂，所以需要使用GLAD来帮我们实现 GLAD配置&emsp;&emsp;GLAD有一个在线服务可以根据语言、版本、模式来获取我们想要的库。打开后，语言选择C/C++，模式选择core，版本选择3.3(因为我用的是3.3版本)&emsp;&emsp;把生成的压缩文件解压，里面的glad和KHR目录放在你的项目头文件目录，glad.c也添加到工程中，并在项目引入头文件 1#include &lt;glad/glad.h&gt; CMakeLists.txt&emsp;&emsp;由于我使用的CLion创建的项目，所以也就使用CMake了，CMakeLists.txt部分内容如下添加glad库 1add_library(glad SHARED ./src/glad/glad.c) 添加stb_image(加载图片用) 1add_library(stb_image SHARED ./src/stb_image/stb_image.cpp) 链接库(opengl_glfw03是项目可执行文件) 123456789101112131415target_link_libraries(opengl_glfw03 glad)target_link_libraries(opengl_glfw03 stb_image)target_link_libraries(opengl_glfw03 GLEW)target_link_libraries(opengl_glfw03 glfw3)target_link_libraries(opengl_glfw03 GL)target_link_libraries(opengl_glfw03 X11)target_link_libraries(opengl_glfw03 pthread)target_link_libraries(opengl_glfw03 Xrandr)target_link_libraries(opengl_glfw03 Xi)target_link_libraries(opengl_glfw03 Xxf86vm)target_link_libraries(opengl_glfw03 Xinerama)target_link_libraries(opengl_glfw03 Xcursor)target_link_libraries(opengl_glfw03 rt)target_link_libraries(opengl_glfw03 m)target_link_libraries(opengl_glfw03 dl) main.cpp编译没问题的话就可以创建窗口了 12345678#include &lt;iostream&gt;#include &lt;glad/glad.h&gt;#include &lt;GLFW/glfw3.h&gt;int main() &#123; std::cout &lt;&lt; "Hello, World!" &lt;&lt; std::endl; return 0;&#125; 开始创建窗口 初始化GLFW 1glfwInit(); GLFW选项设置函数hint：需要设置的选项value：需要设置的值 1glfwWindowHint(int hint,int value); 配置上下文版本为3.3 12glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3); 配置OpenGL模式为核心(core)模式 1glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE); 配置多重采样实现抗锯齿 1glfwWindowHint(GLFW_SAMPLES,4); 别忘了启用OpenGL的多重采样，虽然默认是启用的 1glEnable(GL_MULTISAMPLE); 创建窗口对象width：窗口宽度height：窗口高度title：窗口标题monitor：share： 1glfwCreateWindow(int width,int height,const char *title,GLFWmonitor *monitor,GLFWwindow *share); 1234567GLFWwindow *window=glfwCreateWindow(1200,720,"OpenGL",nullptr,nullptr);if(window==nullptr)&#123; // 当窗口创建失败时中断并退出 ... glfwTerminate(); return -1;&#125; 将当前窗口设置为主线程上下文 1glfwMakeContextCurrent(window); 初始化GLAD 123456if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))&#123; // 当GLAD初始化失败时退出 ... glfwTerminate(); return -1;&#125; 添加窗口大小改变回调 1234// 声明回调函数void onFramebufferSizeCallback(GLFWwindow*,int,int); // 添加回调glfwSetFramebufferSizeCallback(window,onFramebufferSizeCallback); 在回调中处理视口变换x：左下角x坐标y：左下角y坐标width：渲染宽度height：渲染高度 1glViewport(GLint x,GLint y,GLsizei width,GLsizei height); 123void onFramebufferSizeCallback(GLFWwindow *window,int width,int height)&#123; glViewport(0,0,width,height);&#125; 渲染循环为了避免一运行就退出 123456while(!glfwWindowShouldClose(window))&#123; // 交换颜色缓冲 glfwSwapBuffers(window); // 检查触发事件 glfwPollEvents();&#125; 清除窗口颜色缓冲red：红green：绿blue：蓝alpha：透明通道 1glClearColor(GLfloat red,GLfloat green,GLfloat blue,GLfloat alpha); 写在处理键盘事件代码之后 1234// 用glClearColor设置的颜色填充glClearColor(0.5f,0.5f,0.6f,1.0f);// 清除颜色缓冲glClear(GL_COLOR_BUFFER_BIT); 处理键盘事件声明函数 1void onKeyInput(GLFWwindow *); 处理键盘事件写在循环体内部第一行 1onKeyInput(window); 1234567void onKeyInput(GLFWwindow *window)&#123; // 判断ESC按钮就是否触发 if(glfwGetKey(window,GLFW_KEY_ESCAPE)==GLFW_PRESS)&#123; // 触发就设置close为真 glfwSetWindowShouldClose(window,GLFW_TRUE); &#125;&#125; 清理资源并退出 12glfwTerminate();return 0; 最后此时运行代码应该会出现一个窗口像下面这个，按ESC即可退出，后面会在此基础上添加很多东西代码Github地址]]></content>
+      <categories>
+        <category>计算机图形</category>
+      </categories>
+      <tags>
+        <tag>OpenGL</tag>
+        <tag>CPP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[排序算法(一)--冒泡排序]]></title>
+    <url>%2F2019%2F02%2F16%2F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E4%B8%80-%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[冒泡排序&emsp;&emsp;冒泡排序是一种简单的排序算法&emsp;&emsp;重复的遍历要排序的数组，每次比较两个相邻的元素，符合给定的条件则交换两个元素，重复的遍历直到没有相邻的元素需要交换 时间复杂度 最好的情况：O(n) 最坏的情况：O(n2) 平均：O(n2) 空间复杂度 空间复杂度：O(1) 算法描述冒泡排序是通过遍历比较相邻的两个元素来实现的以下数字排序2,3,4,1 第一轮第一次2和3进行比较，因为2不大于3，所以不交换2,3,4,1 第一轮第二次3和4进行比较，因为3不大于4，所以不交换2,3,4,1 第一轮第三次4和1进行比较，因为4大于1，所以交换2,3,1,4 第二轮第一次2和3进行比较，因为2不大于3，所以不交换2,3,1,4 第二轮第二次3和1进行比较，因为3大于1，所以交换2,1,3,4 第三轮第一次2和1进行比较，因为2大于1，所以交换1,2,3,4到这里就排序完成了还可以看看下面的动画演示 假如有以下数字需要排序 点击开始排序 重置 下标 0 1 2 3 4 5 6 7 8 9 元素 2 3 1 4 2 6 7 9 1 5 let table=document.getElementsByTagName("table")[0]; let startSort=document.getElementById("xhh-btn-sort"); let reset=document.getElementById("xhh-btn-reset"); let textLog=document.getElementById("xhh-text-log"); let indices=table.getElementsByTagName("th"); let elements=table.getElementsByTagName("td"); let arr=[2,3,1,4,2,6,7,9,1,5]; let timer=new Array(); reset.onclick=function(){ resetSort(); }; startSort.onclick=function(){ resetSort(); let count=0; for(let i=1;i]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Redis学习(三)--数据类型]]></title>
+    <url>%2F2019%2F02%2F15%2FRedis%E5%AD%A6%E4%B9%A0-%E4%B8%89-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%2F</url>
+    <content type="text"><![CDATA[Redis 数据类型Redis支持五种数据类型 字符串：String 哈希：Hash 列表：List 集合：Set 有序集合：Sorted Set 类型 简介 特性 String 字符串 二进制安全可以包含任何数据一个键最大储存512M Hash 字典键值对集合 一个属性对应一个值，适合储存对象 List 双向链表 增删快 Set 无序集合 元素不重复增、删、查的复杂度为O(1) Sorted Set 有序集合 元素不重复元素按score排序]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Redis学习(二)--配置]]></title>
+    <url>%2F2019%2F02%2F15%2FRedis%E5%AD%A6%E4%B9%A0-%E4%BA%8C-%E9%85%8D%E7%BD%AE%2F</url>
+    <content type="text"><![CDATA[Redis 配置 配置文件：redis.conf 命令 获取配置CONFIG GET 配置项名 123127.0.0.1:6379&gt; CONFIG GET port1) "port"2) "6379" 设置配置CONFIG SET 配置项名 新的值如果出现(error) ERR Unsupported CONFIG parameter就说明这个选项不能动态设置 12127.0.0.1:6379&gt; CONFIG SET loglevel "notice"OK 配置选项 待更新…]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+        <tag>学习</tag>
+        <tag>待更新</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Redis学习(一)--简介和安装]]></title>
+    <url>%2F2019%2F02%2F14%2FRedis%E5%AD%A6%E4%B9%A0-%E4%B8%80-%E7%AE%80%E4%BB%8B%E5%92%8C%E5%AE%89%E8%A3%85%2F</url>
+    <content type="text"><![CDATA[![redis logo](redis.jpeg) Redis 简介Redis 是一个开源的使用ANSI C语言编写、支持网络、可基于内存也可以持久化的日志型、Key-Value数据库 特点 支持数据持久化 支持key-value、list、set、zset、hash等数据结构 支持master-slave模式的数据备份 优势 性能极高 数据类型丰富 操作都是原子性的(要么成功执行，要么失败完全不执行) 特性丰富 安装注：本机系统ArchLinux Linux ArchLinux 12$ sudo pacman -S redis... 或者 12$ yay -S redis... Ubuntu 12$ sudo apt-get install redis-server... Windows10 Windows暂时不讨论 Mac Mac暂时不讨论 启动 启动Redis 12$ redis-server... 查看是否启动 12$ redis-cli... 或者redis-cli -h 主机ip -p redis端口 -a 密码 12$ redis-cli -h 127.0.0.1 -p 6379... 当启动成功后会进入redis的终端127.0.0.1：本机IP6379：redis服务端口 1127.0.0.1:6379&gt; 输入ping命令服务器运行正常会返回PONG否则返回连接错误 12127.0.0.1:6379&gt; pingPONG 说明已经成功安装 总结 安装(本机终端): yay -S redis 启动(终端): redis-server 连接(终端): redis-cli 检查(redis-cli): ping]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+        <tag>学习</tag>
+      </tags>
+  </entry>
+</search>

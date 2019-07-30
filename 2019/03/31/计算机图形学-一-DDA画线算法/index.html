@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#f5f5f5">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="DDA直线绘制算法&amp;emsp;&amp;emsp;DDA就是数值微分Digital Differential Analyzer)的简称。在一个坐标轴上以单位间隔对线段进行取样，从而确定另一个最靠近路径对应的整数值。 优点&amp;emsp;&amp;emsp;利用增量思想使得在确定直线中每个点的坐标时只进行一次加法运算 缺点&amp;emsp;&amp;emsp;由于直线的斜率($k={{y1-y0}\over{x1-x0}}$)有可能">
+<meta name="keywords" content="OpenGL,C,数学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机图形学(一)--DDA画线算法">
+<meta property="og:url" content="https://blog.xhhold.com/2019/03/31/计算机图形学-一-DDA画线算法/index.html">
+<meta property="og:site_name" content="灰灰のBLOG">
+<meta property="og:description" content="DDA直线绘制算法&amp;emsp;&amp;emsp;DDA就是数值微分Digital Differential Analyzer)的简称。在一个坐标轴上以单位间隔对线段进行取样，从而确定另一个最靠近路径对应的整数值。 优点&amp;emsp;&amp;emsp;利用增量思想使得在确定直线中每个点的坐标时只进行一次加法运算 缺点&amp;emsp;&amp;emsp;由于直线的斜率($k={{y1-y0}\over{x1-x0}}$)有可能">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-27T03:03:21.703Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机图形学(一)--DDA画线算法">
+<meta name="twitter:description" content="DDA直线绘制算法&amp;emsp;&amp;emsp;DDA就是数值微分Digital Differential Analyzer)的简称。在一个坐标轴上以单位间隔对线段进行取样，从而确定另一个最靠近路径对应的整数值。 优点&amp;emsp;&amp;emsp;利用增量思想使得在确定直线中每个点的坐标时只进行一次加法运算 缺点&amp;emsp;&amp;emsp;由于直线的斜率($k={{y1-y0}\over{x1-x0}}$)有可能">
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="灰灰のBLOG" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="https://blog.xhhold.com/2019/03/31/计算机图形学-一-DDA画线算法/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>计算机图形学(一)--DDA画线算法 | 灰灰のBLOG</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">灰灰のBLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">记录一些东西</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.xhhold.com/2019/03/31/计算机图形学-一-DDA画线算法/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小灰灰">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="灰灰のBLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机图形学(一)--DDA画线算法
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-31 15:19:20" itemprop="dateCreated datePublished" datetime="2019-03-31T15:19:20+08:00">2019-03-31</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-27 11:03:21" itemprop="dateModified" datetime="2019-07-27T11:03:21+08:00">2019-07-27</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/计算机图形/" itemprop="url" rel="index"><span itemprop="name">计算机图形</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="DDA直线绘制算法"><a href="#DDA直线绘制算法" class="headerlink" title="DDA直线绘制算法"></a>DDA直线绘制算法</h1><p>&emsp;&emsp;DDA就是<code>数值微分</code>Digital Differential Analyzer)的简称。在一个坐标轴上以单位间隔对线段进行取样，从而确定另一个最靠近路径对应的整数值。</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>&emsp;&emsp;利用<code>增量思想</code>使得在确定直线中每个点的坐标时只进行一次加法运算</p>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>&emsp;&emsp;由于直线的<code>斜率</code>($k={{y1-y0}\over{x1-x0}}$)有可能是小数，并且在计算出坐标后的值还得进行取整，所以此算法不利于硬件实现</p>
+<h1 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h1><h2 id="直线方程斜截式"><a href="#直线方程斜截式" class="headerlink" title="直线方程斜截式"></a>直线方程斜截式</h2><p>&emsp;&emsp;($y=kx+b$)，其中<code>k</code>是<code>斜率</code>，<code>b</code>是直线在<code>y</code>轴上的<code>截距</code>，而<code>斜率</code>($k={\Delta y \over \Delta x}={{y1-y0}\over{x1-x0}}$)</p>
+<h2 id="假设"><a href="#假设" class="headerlink" title="假设"></a>假设</h2><p>&emsp;&emsp;现在需要画一条经过点$P_0(2,3)$和点$P_1(17,12)$的直线<br>&emsp;&emsp;根据直线方程斜截式($y=kx+b$)，此时<code>b=0</code>，其中<code>斜率</code>($k={{y1-y0}\over{x1-x0}}={{12-3}\over{17-2}}=0.6$)，可以表示为：$y=0.6x$</p>
+<h2 id="用图表示"><a href="#用图表示" class="headerlink" title="用图表示"></a>用图表示</h2><p>&emsp;&emsp;* 第<code>0</code>个点(2,3)</p>
+<svg width="400" height="300" viewbox="0 0 200 150">
+  <g id="grid">
+    <path d="
+    M10 0 L10 150
+    M20 10 L20 140
+    M30 10 L30 140
+    M40 10 L40 140
+    M50 10 L50 140
+    M60 10 L60 140
+    M70 10 L70 140
+    M80 10 L80 140
+    M90 10 L90 140
+    M100 10 L100 140
+    M110 10 L110 140
+    M120 10 L120 140
+    M130 10 L130 140
+    M140 10 L140 140
+    M150 10 L150 140
+    M160 10 L160 140
+    M170 10 L170 140
+    M180 10 L180 140
+    M190 10 L190 140
+    M0 140 L200 140
+    M10 130 L190 130
+    M10 120 L190 120
+    M10 110 L190 110
+    M10 100 L190 100
+    M10 90 L190 90
+    M10 80 L190 80
+    M10 70 L190 70
+    M10 60 L190 60
+    M10 50 L190 50
+    M10 40 L190 40
+    M10 30 L190 30
+    M10 20 L190 20
+    M10 10 L190 10
+    " stroke="black" stroke-width="1"/>
+  </g>
+  <g id="coords">
+    <text x="0" y="150" font-size="8" fill="black">0</text>
+    <text x="13" y="150" font-size="8" fill="grey">1</text>
+    <text x="23" y="150" font-size="8" fill="black">2</text>
+    <text x="33" y="150" font-size="8" fill="grey">3</text>
+    <text x="43" y="150" font-size="8" fill="black">4</text>
+    <text x="53" y="150" font-size="8" fill="grey">5</text>
+    <text x="63" y="150" font-size="8" fill="black">6</text>
+    <text x="73" y="150" font-size="8" fill="grey">7</text>
+    <text x="83" y="150" font-size="8" fill="black">8</text>
+    <text x="93" y="150" font-size="8" fill="grey">9</text>
+    <text x="100" y="150" font-size="8" fill="black">10</text>
+    <text x="110" y="150" font-size="8" fill="grey">11</text>
+    <text x="120" y="150" font-size="8" fill="black">12</text>
+    <text x="130" y="150" font-size="8" fill="grey">13</text>
+    <text x="140" y="150" font-size="8" fill="black">14</text>
+    <text x="150" y="150" font-size="8" fill="grey">15</text>
+    <text x="160" y="150" font-size="8" fill="black">16</text>
+    <text x="170" y="150" font-size="8" fill="grey">17</text>
+    <text x="180" y="150" font-size="8" fill="black">18</text>
+    <text x="0" y="138" font-size="8" fill="grey">1</text>
+    <text x="0" y="128" font-size="8" fill="black">2</text>
+    <text x="0" y="118" font-size="8" fill="grey">3</text>
+    <text x="0" y="108" font-size="8" fill="black">4</text>
+    <text x="0" y="98" font-size="8" fill="grey">5</text>
+    <text x="0" y="88" font-size="8" fill="black">6</text>
+    <text x="0" y="78" font-size="8" fill="grey">7</text>
+    <text x="0" y="68" font-size="8" fill="black">8</text>
+    <text x="0" y="58" font-size="8" fill="grey">9</text>
+    <text x="0" y="48" font-size="8" fill="black">10</text>
+    <text x="0" y="38" font-size="8" fill="grey">11</text>
+    <text x="0" y="28" font-size="8" fill="black">12</text>
+    <text x="0" y="18" font-size="8" fill="grey">13</text>
+  </g>
+  <g id="points">
+    <rect x="20" y="110" width="10" height="10" fill="red"/>
+  </g>
+</svg>
+
+<p>&emsp;&emsp;* 第<code>1</code>个点<code>y=0.6x1=0.6</code>，坐标<code>x</code>上加<code>1</code>、<code>y</code>加上<code>0.6</code>，取整后<code>(3,4)</code></p>
+<svg width="400" height="300" viewbox="0 0 200 150">
+  <g id="grid">
+    <path d="
+    M10 0 L10 150
+    M20 10 L20 140
+    M30 10 L30 140
+    M40 10 L40 140
+    M50 10 L50 140
+    M60 10 L60 140
+    M70 10 L70 140
+    M80 10 L80 140
+    M90 10 L90 140
+    M100 10 L100 140
+    M110 10 L110 140
+    M120 10 L120 140
+    M130 10 L130 140
+    M140 10 L140 140
+    M150 10 L150 140
+    M160 10 L160 140
+    M170 10 L170 140
+    M180 10 L180 140
+    M190 10 L190 140
+    M0 140 L200 140
+    M10 130 L190 130
+    M10 120 L190 120
+    M10 110 L190 110
+    M10 100 L190 100
+    M10 90 L190 90
+    M10 80 L190 80
+    M10 70 L190 70
+    M10 60 L190 60
+    M10 50 L190 50
+    M10 40 L190 40
+    M10 30 L190 30
+    M10 20 L190 20
+    M10 10 L190 10
+    " stroke="black" stroke-width="1"/>
+  </g>
+  <g id="coords">
+    <text x="0" y="150" font-size="8" fill="black">0</text>
+    <text x="13" y="150" font-size="8" fill="grey">1</text>
+    <text x="23" y="150" font-size="8" fill="black">2</text>
+    <text x="33" y="150" font-size="8" fill="grey">3</text>
+    <text x="43" y="150" font-size="8" fill="black">4</text>
+    <text x="53" y="150" font-size="8" fill="grey">5</text>
+    <text x="63" y="150" font-size="8" fill="black">6</text>
+    <text x="73" y="150" font-size="8" fill="grey">7</text>
+    <text x="83" y="150" font-size="8" fill="black">8</text>
+    <text x="93" y="150" font-size="8" fill="grey">9</text>
+    <text x="100" y="150" font-size="8" fill="black">10</text>
+    <text x="110" y="150" font-size="8" fill="grey">11</text>
+    <text x="120" y="150" font-size="8" fill="black">12</text>
+    <text x="130" y="150" font-size="8" fill="grey">13</text>
+    <text x="140" y="150" font-size="8" fill="black">14</text>
+    <text x="150" y="150" font-size="8" fill="grey">15</text>
+    <text x="160" y="150" font-size="8" fill="black">16</text>
+    <text x="170" y="150" font-size="8" fill="grey">17</text>
+    <text x="180" y="150" font-size="8" fill="black">18</text>
+    <text x="0" y="138" font-size="8" fill="grey">1</text>
+    <text x="0" y="128" font-size="8" fill="black">2</text>
+    <text x="0" y="118" font-size="8" fill="grey">3</text>
+    <text x="0" y="108" font-size="8" fill="black">4</text>
+    <text x="0" y="98" font-size="8" fill="grey">5</text>
+    <text x="0" y="88" font-size="8" fill="black">6</text>
+    <text x="0" y="78" font-size="8" fill="grey">7</text>
+    <text x="0" y="68" font-size="8" fill="black">8</text>
+    <text x="0" y="58" font-size="8" fill="grey">9</text>
+    <text x="0" y="48" font-size="8" fill="black">10</text>
+    <text x="0" y="38" font-size="8" fill="grey">11</text>
+    <text x="0" y="28" font-size="8" fill="black">12</text>
+    <text x="0" y="18" font-size="8" fill="grey">13</text>
+  </g>
+  <g id="points">
+    <rect x="20" y="110" width="10" height="10" fill="green"/>
+    <rect x="30" y="100" width="10" height="10" fill="red"/>
+  </g>
+</svg>
+
+<p>&emsp;&emsp;* 第<code>2</code>个点<code>y=0.6x2=1.2</code>，坐标<code>x</code>上加<code>1</code>、<code>y</code>加上<code>1.2</code>，取整后<code>(4,4)</code></p>
+<svg width="400" height="300" viewbox="0 0 200 150">
+  <g id="grid">
+    <path d="
+    M10 0 L10 150
+    M20 10 L20 140
+    M30 10 L30 140
+    M40 10 L40 140
+    M50 10 L50 140
+    M60 10 L60 140
+    M70 10 L70 140
+    M80 10 L80 140
+    M90 10 L90 140
+    M100 10 L100 140
+    M110 10 L110 140
+    M120 10 L120 140
+    M130 10 L130 140
+    M140 10 L140 140
+    M150 10 L150 140
+    M160 10 L160 140
+    M170 10 L170 140
+    M180 10 L180 140
+    M190 10 L190 140
+    M0 140 L200 140
+    M10 130 L190 130
+    M10 120 L190 120
+    M10 110 L190 110
+    M10 100 L190 100
+    M10 90 L190 90
+    M10 80 L190 80
+    M10 70 L190 70
+    M10 60 L190 60
+    M10 50 L190 50
+    M10 40 L190 40
+    M10 30 L190 30
+    M10 20 L190 20
+    M10 10 L190 10
+    " stroke="black" stroke-width="1"/>
+  </g>
+  <g id="coords">
+    <text x="0" y="150" font-size="8" fill="black">0</text>
+    <text x="13" y="150" font-size="8" fill="grey">1</text>
+    <text x="23" y="150" font-size="8" fill="black">2</text>
+    <text x="33" y="150" font-size="8" fill="grey">3</text>
+    <text x="43" y="150" font-size="8" fill="black">4</text>
+    <text x="53" y="150" font-size="8" fill="grey">5</text>
+    <text x="63" y="150" font-size="8" fill="black">6</text>
+    <text x="73" y="150" font-size="8" fill="grey">7</text>
+    <text x="83" y="150" font-size="8" fill="black">8</text>
+    <text x="93" y="150" font-size="8" fill="grey">9</text>
+    <text x="100" y="150" font-size="8" fill="black">10</text>
+    <text x="110" y="150" font-size="8" fill="grey">11</text>
+    <text x="120" y="150" font-size="8" fill="black">12</text>
+    <text x="130" y="150" font-size="8" fill="grey">13</text>
+    <text x="140" y="150" font-size="8" fill="black">14</text>
+    <text x="150" y="150" font-size="8" fill="grey">15</text>
+    <text x="160" y="150" font-size="8" fill="black">16</text>
+    <text x="170" y="150" font-size="8" fill="grey">17</text>
+    <text x="180" y="150" font-size="8" fill="black">18</text>
+    <text x="0" y="138" font-size="8" fill="grey">1</text>
+    <text x="0" y="128" font-size="8" fill="black">2</text>
+    <text x="0" y="118" font-size="8" fill="grey">3</text>
+    <text x="0" y="108" font-size="8" fill="black">4</text>
+    <text x="0" y="98" font-size="8" fill="grey">5</text>
+    <text x="0" y="88" font-size="8" fill="black">6</text>
+    <text x="0" y="78" font-size="8" fill="grey">7</text>
+    <text x="0" y="68" font-size="8" fill="black">8</text>
+    <text x="0" y="58" font-size="8" fill="grey">9</text>
+    <text x="0" y="48" font-size="8" fill="black">10</text>
+    <text x="0" y="38" font-size="8" fill="grey">11</text>
+    <text x="0" y="28" font-size="8" fill="black">12</text>
+    <text x="0" y="18" font-size="8" fill="grey">13</text>
+  </g>
+  <g id="points">
+    <rect x="20" y="110" width="10" height="10" fill="green"/>
+    <rect x="30" y="100" width="10" height="10" fill="green"/>
+    <rect x="40" y="100" width="10" height="10" fill="red"/>
+  </g>
+</svg>
+
+<p>……</p>
+<p>&emsp;&emsp;* 一直到第<code>15</code>个点<code>y=0.6x15=9.0</code>，坐标<code>(17,12)</code></p>
+<svg width="400" height="300" viewbox="0 0 200 150">
+  <g id="grid">
+    <path d="
+    M10 0 L10 150
+    M20 10 L20 140
+    M30 10 L30 140
+    M40 10 L40 140
+    M50 10 L50 140
+    M60 10 L60 140
+    M70 10 L70 140
+    M80 10 L80 140
+    M90 10 L90 140
+    M100 10 L100 140
+    M110 10 L110 140
+    M120 10 L120 140
+    M130 10 L130 140
+    M140 10 L140 140
+    M150 10 L150 140
+    M160 10 L160 140
+    M170 10 L170 140
+    M180 10 L180 140
+    M190 10 L190 140
+    M0 140 L200 140
+    M10 130 L190 130
+    M10 120 L190 120
+    M10 110 L190 110
+    M10 100 L190 100
+    M10 90 L190 90
+    M10 80 L190 80
+    M10 70 L190 70
+    M10 60 L190 60
+    M10 50 L190 50
+    M10 40 L190 40
+    M10 30 L190 30
+    M10 20 L190 20
+    M10 10 L190 10
+    " stroke="black" stroke-width="1"/>
+  </g>
+  <g id="coords">
+    <text x="0" y="150" font-size="8" fill="black">0</text>
+    <text x="13" y="150" font-size="8" fill="grey">1</text>
+    <text x="23" y="150" font-size="8" fill="black">2</text>
+    <text x="33" y="150" font-size="8" fill="grey">3</text>
+    <text x="43" y="150" font-size="8" fill="black">4</text>
+    <text x="53" y="150" font-size="8" fill="grey">5</text>
+    <text x="63" y="150" font-size="8" fill="black">6</text>
+    <text x="73" y="150" font-size="8" fill="grey">7</text>
+    <text x="83" y="150" font-size="8" fill="black">8</text>
+    <text x="93" y="150" font-size="8" fill="grey">9</text>
+    <text x="100" y="150" font-size="8" fill="black">10</text>
+    <text x="110" y="150" font-size="8" fill="grey">11</text>
+    <text x="120" y="150" font-size="8" fill="black">12</text>
+    <text x="130" y="150" font-size="8" fill="grey">13</text>
+    <text x="140" y="150" font-size="8" fill="black">14</text>
+    <text x="150" y="150" font-size="8" fill="grey">15</text>
+    <text x="160" y="150" font-size="8" fill="black">16</text>
+    <text x="170" y="150" font-size="8" fill="grey">17</text>
+    <text x="180" y="150" font-size="8" fill="black">18</text>
+    <text x="0" y="138" font-size="8" fill="grey">1</text>
+    <text x="0" y="128" font-size="8" fill="black">2</text>
+    <text x="0" y="118" font-size="8" fill="grey">3</text>
+    <text x="0" y="108" font-size="8" fill="black">4</text>
+    <text x="0" y="98" font-size="8" fill="grey">5</text>
+    <text x="0" y="88" font-size="8" fill="black">6</text>
+    <text x="0" y="78" font-size="8" fill="grey">7</text>
+    <text x="0" y="68" font-size="8" fill="black">8</text>
+    <text x="0" y="58" font-size="8" fill="grey">9</text>
+    <text x="0" y="48" font-size="8" fill="black">10</text>
+    <text x="0" y="38" font-size="8" fill="grey">11</text>
+    <text x="0" y="28" font-size="8" fill="black">12</text>
+    <text x="0" y="18" font-size="8" fill="grey">13</text>
+  </g>
+  <g id="points">
+    <rect x="20" y="110" width="10" height="10" fill="green"/>
+    <rect x="30" y="100" width="10" height="10" fill="green"/>
+    <rect x="40" y="100" width="10" height="10" fill="green"/>
+    <rect x="50" y="90" width="10" height="10" fill="green"/>
+    <rect x="60" y="90" width="10" height="10" fill="green"/>
+    <rect x="70" y="80" width="10" height="10" fill="green"/>
+    <rect x="80" y="70" width="10" height="10" fill="green"/>
+    <rect x="90" y="70" width="10" height="10" fill="green"/>
+    <rect x="100" y="60" width="10" height="10" fill="green"/>
+    <rect x="110" y="60" width="10" height="10" fill="green"/>
+    <rect x="120" y="50" width="10" height="10" fill="green"/>
+    <rect x="130" y="40" width="10" height="10" fill="green"/>
+    <rect x="140" y="40" width="10" height="10" fill="green"/>
+    <rect x="150" y="30" width="10" height="10" fill="green"/>
+    <rect x="160" y="30" width="10" height="10" fill="green"/>
+    <rect x="170" y="20" width="10" height="10" fill="red"/>
+  </g>
+</svg>
+
+<p>&emsp;&emsp;* 至此就完成了一条直线的绘制</p>
+<h2 id="增量"><a href="#增量" class="headerlink" title="增量"></a>增量</h2><p>&emsp;&emsp;可以看到，上面的方法可以快速的画出一条直线，不过还需要优化一下。之前说的DDA每次确定一个点只需要一次加法运算，但是这里却进行了一次乘法加上一次加法。<br>&emsp;&emsp;可以看出来，这里的y就是每次<code>斜率</code>加上了上一次的y坐标：<br>$y<em>i=kx+b$<br>下一个点表示为<br>$y</em>{i+1}=k(x+1)+b$<br>$\qquad=kx+k+b$<br>$\qquad=kx+b+k$<br>可以看到这里的$kx+b$就等于$y<em>i$<br>所以<br>$y</em>{i+1}=y_i+k$</p>
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><ul>
+<li>先声明一个画线的函数：<br><strong>x0</strong>：起点<code>x</code>坐标<br><strong>y0</strong>：起点<code>y</code>坐标<br><strong>x1</strong>：结束点<code>x</code>坐标<br><strong>y1</strong>：结束点<code>y</code>坐标</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dda</span><span class="params">(<span class="keyword">int</span> x0,<span class="keyword">int</span> y0,<span class="keyword">int</span> x1,<span class="keyword">int</span> y1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="当斜率-0-lt-k-leq1-时"><a href="#当斜率-0-lt-k-leq1-时" class="headerlink" title="当斜率$0&lt;|k|\leq1$时"></a>当斜率$0&lt;|k|\leq1$时</h2><p>&emsp;&emsp;斜率<code>小于等于1</code>时可以直接通过递增x方向来计算出y的值，但如果斜率大于1就会出现点不连续的情况。</p>
+<ul>
+<li>先计算两个坐标的<code>x</code>、<code>y</code>坐标差</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> dx=x1-x0;</span><br><span class="line"><span class="keyword">float</span> dy=y1-y1;</span><br><span class="line"><span class="keyword">float</span> y=y0;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后根据($k={\Delta y \over \Delta x}$)求出<code>斜率</code>，<code>注：dx为0的情况未考虑进去</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> k=dy/dx;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>之前就已经推导出<code>y</code>的值其实就是每次都用斜率加上前一次的值，所以求<code>y</code>的代码可以这样写</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">y+=k;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>再使用循环来绘制所有点，由于这里是<code>斜率</code>小于等于1的情况，所以判断<code>x0</code>是否小于等于结束点的<code>x1</code>作为循环条件</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(;x0&lt;=x1;++x0)</span><br><span class="line">&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>再把求<code>y</code>值以及画点的代码添加进去</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(;x0&lt;=x1;++x0)</span><br><span class="line">&#123;</span><br><span class="line">  drawPoint(x0,(<span class="keyword">int</span>)(y+<span class="number">0.5</span>));</span><br><span class="line">  y+=k;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>完整代码如下</strong> <code>注：未考虑dx为0的情况</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> dx=x1-x0;</span><br><span class="line"><span class="keyword">float</span> dy=y1-y1;</span><br><span class="line"><span class="keyword">float</span> y=y0;</span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> k=dy/dx;</span><br><span class="line"><span class="keyword">for</span>(;x0&lt;=x1;++x0)</span><br><span class="line">&#123;</span><br><span class="line">  drawPoint(x0,(<span class="keyword">int</span>)(y+<span class="number">0.5</span>));</span><br><span class="line">  y+=k;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="当斜率-k-gt-1-时"><a href="#当斜率-k-gt-1-时" class="headerlink" title="当斜率$|k|&gt;1$时"></a>当斜率$|k|&gt;1$时</h2><p>&emsp;&emsp;斜率<code>大于1</code>时只需要把计算y值改成计算x值就行了，注意<code>k=dx/dy</code>，<code>注：dy可能为0</code></p>
+<ul>
+<li><strong>完整代码如下</strong> <code>注：未考虑dy为0的情况</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> dx=x1-x0;</span><br><span class="line"><span class="keyword">float</span> dy=y1-y1;</span><br><span class="line"><span class="keyword">float</span> x=x0;</span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> k=dx/dy;</span><br><span class="line"><span class="keyword">for</span>(;y0&lt;=y1;++y0)</span><br><span class="line">&#123;</span><br><span class="line">  drawPoint((<span class="keyword">int</span>)(x+<span class="number">0.5</span>),y0);</span><br><span class="line">  x+=k;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="适用于任何斜率的方法"><a href="#适用于任何斜率的方法" class="headerlink" title="适用于任何斜率的方法"></a>适用于任何斜率的方法</h2><p>&emsp;&emsp;由于上面两种都只针对特定的斜率以及特定的方向绘制直线，所以还得优化下</p>
+<ul>
+<li>首先还是得先计算两个坐标的<code>x</code>、<code>y</code>的差</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> dx=x1-x0;</span><br><span class="line"><span class="keyword">float</span> dy=y1-y1;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后这里多了个<code>steps</code>变量，可以看作是绘制这条直线的点的数量。<code>注：这里引入了math.h头文件用来获取绝对值</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> steps=<span class="built_in">abs</span>(y1-y0);</span><br><span class="line"><span class="comment">// 这里是取绘制点数最多的值</span></span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">fabs</span>(dx)&gt;<span class="built_in">fabs</span>(dy))</span><br><span class="line">  steps=<span class="built_in">abs</span>(x1-x0);</span><br><span class="line"><span class="comment">// 注意：在这之后steps可能为0,</span></span><br><span class="line"><span class="comment">// steps为0的话就只需要画一个起点就行了(这里未写出)，不需要再执行下面的代码</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>因为现在是两种情况都要考虑，所以就一次性计算出每一步(step)的<code>x</code>与<code>y</code>的增量</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先初始化两个坐标为起点</span></span><br><span class="line"><span class="keyword">float</span> x=x0;</span><br><span class="line"><span class="keyword">float</span> y=y0;</span><br><span class="line"><span class="comment">// 然后定义两个x和y的增量变量</span></span><br><span class="line"><span class="comment">// 分别用两点的x、y的差除与需要绘制的点数来获得每绘制结束一个点后需要前进多少</span></span><br><span class="line"><span class="keyword">float</span> xinc=dx/steps;</span><br><span class="line"><span class="keyword">float</span> yinc=dy/steps;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>首先第一个点要自己绘制。<code>注：这里引入了math.h头文件进行四舍五入操作</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drawPoint(round(x),round(y));</span><br></pre></td></tr></table></figure>
+<ul>
+<li>剩下的点，绘制<code>steps</code>个就行了</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;steps;++i)</span><br><span class="line">&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>计算当前点的位置，直接<code>x</code>和<code>y</code>分别加上增量就行了</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x+=xinc;</span><br><span class="line">y+=yinc;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>绘制点的方法不变，把这些放进循环里面</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;steps;++i)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 注意这里需要放到本次循环开始</span></span><br><span class="line">  <span class="comment">// 因为第一个点已经绘制了</span></span><br><span class="line">  x+=xinc;</span><br><span class="line">  y+=yinc;</span><br><span class="line"></span><br><span class="line">  drawPoint(round(x),round(y));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>完整代码如下</strong> <code>注：未考虑steps为0的情况</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> dx=x1-x0;</span><br><span class="line"><span class="keyword">float</span> dy=y1-y1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> steps=<span class="built_in">abs</span>(y1-y0);</span><br><span class="line"><span class="comment">// 这里是取绘制点数最多的值</span></span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">fabs</span>(dx)&gt;<span class="built_in">fabs</span>(dy))</span><br><span class="line">  steps=<span class="built_in">abs</span>(x1-x0);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 先初始化两个坐标为起点</span></span><br><span class="line"><span class="keyword">float</span> x=x0;</span><br><span class="line"><span class="keyword">float</span> y=y0;</span><br><span class="line"><span class="comment">// 然后定义两个x和y的增量变量</span></span><br><span class="line"><span class="comment">// 分别用两点的x、y的差除与需要绘制的点数来获得每绘制结束一个点后需要前进多少</span></span><br><span class="line"><span class="keyword">float</span> xinc=dx/steps;</span><br><span class="line"><span class="keyword">float</span> yinc=dy/steps;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 绘制起点</span></span><br><span class="line">drawPoint(round(x),round(y));</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;steps;++i)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 注意这里需要放到本次循环开始</span></span><br><span class="line">  <span class="comment">// 因为第一个点已经绘制了</span></span><br><span class="line">  x+=xinc;</span><br><span class="line">  y+=yinc;</span><br><span class="line"></span><br><span class="line">  drawPoint(round(x),round(y));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="代码地址"><a href="#代码地址" class="headerlink" title="代码地址"></a>代码地址</h1><p><a href="https://github.com/xiaohuihuiold/computer_graphics/blob/master/line/dda.c" target="_blank" rel="noopener">dda.c</a></p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>&emsp;&emsp;DDA的计算方法比直接套用直线方程的效率要高得多。虽然从一个乘法一个加法缩减到了一个加法，但是在进行计算中的浮点运算和取整依旧比较耗时。后面会接触绘制直线的其它算法。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="小灰灰 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="小灰灰 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+            <a href="/tags/C/" rel="tag"># C</a>
+          
+            <a href="/tags/数学/" rel="tag"># 数学</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/12/Java多线程-二-volatile/" rel="next" title="Java多线程(二)--volatile">
+                <i class="fa fa-chevron-left"></i> Java多线程(二)--volatile
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zODkyOC8xNTQ1Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="小灰灰">
+            
+              <p class="site-author-name" itemprop="name">小灰灰</p>
+              <p class="site-description motion-element" itemprop="description">记录一些东西</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/xiaohuihuiold" title="GitHub &rarr; https://github.com/xiaohuihuiold" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:xiaohuihuiold@gmail.com" title="E-Mail &rarr; mailto:xiaohuihuiold@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.endureblaze.cn" title="http://www.endureblaze.cn" rel="noopener" target="_blank">汝南京-Endure Blaze</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.imlk.top" title="https://blog.imlk.top" rel="noopener" target="_blank">IMLK</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://bin.zmide.com" title="https://bin.zmide.com" rel="noopener" target="_blank">天真的小窝</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://dabai2017.gitee.io/home" title="https://dabai2017.gitee.io/home" rel="noopener" target="_blank">冯同学的个人主页</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://heyanle.cn" title="https://heyanle.cn" rel="noopener" target="_blank">何言的杂货店</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DDA直线绘制算法"><span class="nav-number">1.</span> <span class="nav-text">DDA直线绘制算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优点"><span class="nav-number">1.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺点"><span class="nav-number">1.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算法思想"><span class="nav-number">2.</span> <span class="nav-text">算法思想</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#直线方程斜截式"><span class="nav-number">2.1.</span> <span class="nav-text">直线方程斜截式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#假设"><span class="nav-number">2.2.</span> <span class="nav-text">假设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用图表示"><span class="nav-number">2.3.</span> <span class="nav-text">用图表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增量"><span class="nav-number">2.4.</span> <span class="nav-text">增量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法实现"><span class="nav-number">2.5.</span> <span class="nav-text">算法实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当斜率-0-lt-k-leq1-时"><span class="nav-number">2.6.</span> <span class="nav-text">当斜率$0&lt;|k|\leq1$时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当斜率-k-gt-1-时"><span class="nav-number">2.7.</span> <span class="nav-text">当斜率$|k|&gt;1$时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#适用于任何斜率的方法"><span class="nav-number">2.8.</span> <span class="nav-text">适用于任何斜率的方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码地址"><span class="nav-number">3.</span> <span class="nav-text">代码地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最后"><span class="nav-number">4.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小灰灰</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+    <script>
+  window.livereOptions = {
+    refer: '2019/03/31/计算机图形学-一-DDA画线算法/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
