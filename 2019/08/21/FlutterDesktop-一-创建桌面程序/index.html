@@ -92,18 +92,25 @@
 
 
 
-  <meta name="description" content="synchronized&amp;emsp;&amp;emsp;synchronized保证使用同一个对象锁的代码块在同一时间只能被一个线程执行。方法、对象、静态方法、class类锁都属于对象锁（Class对象是唯一的、全局的）方法：this对象对象：创建的对象静态方法：方法所在类的Class对象class类锁：Class对象 用法对象锁 代码块 &amp;emsp;&amp;emsp;如果只有一个obj对象，当线程1执行到sy">
-<meta name="keywords" content="Java">
+  <meta name="description" content="准备工作 更新Flutter到最新版  1$ flutter upgrade  添加环境变量以启用Desktop支持  变量名ENABLE_FLUTTER_DESKTOP 变量值为true 添加完成后Linux下可以使用echo $ENABLE_FLUTTER_DESKTOP查看是否添加成功,如果没有的话可以重启或者是使用source命令 如图   添加好之后最好再执行一次flutter doct">
+<meta name="keywords" content="CPP,Flutter,Dart">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java多线程(一)--synchronized">
-<meta property="og:url" content="https://blog.xhhold.com/2019/03/11/Java多线程-一-synchronized/index.html">
+<meta property="og:title" content="FlutterDesktop(一)--创建桌面程序">
+<meta property="og:url" content="https://blog.xhhold.com/2019/08/21/FlutterDesktop-一-创建桌面程序/index.html">
 <meta property="og:site_name" content="灰灰のBLOG">
-<meta property="og:description" content="synchronized&amp;emsp;&amp;emsp;synchronized保证使用同一个对象锁的代码块在同一时间只能被一个线程执行。方法、对象、静态方法、class类锁都属于对象锁（Class对象是唯一的、全局的）方法：this对象对象：创建的对象静态方法：方法所在类的Class对象class类锁：Class对象 用法对象锁 代码块 &amp;emsp;&amp;emsp;如果只有一个obj对象，当线程1执行到sy">
+<meta property="og:description" content="准备工作 更新Flutter到最新版  1$ flutter upgrade  添加环境变量以启用Desktop支持  变量名ENABLE_FLUTTER_DESKTOP 变量值为true 添加完成后Linux下可以使用echo $ENABLE_FLUTTER_DESKTOP查看是否添加成功,如果没有的话可以重启或者是使用source命令 如图   添加好之后最好再执行一次flutter doct">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-27T03:03:21.703Z">
+<meta property="og:image" content="https://blog.xhhold.com/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot01.png">
+<meta property="og:image" content="https://blog.xhhold.com/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot02.png">
+<meta property="og:image" content="https://blog.xhhold.com/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot03.png">
+<meta property="og:image" content="https://blog.xhhold.com/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot04.png">
+<meta property="og:image" content="https://blog.xhhold.com/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot05.png">
+<meta property="og:image" content="https://blog.xhhold.com/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot06.png">
+<meta property="og:updated_time" content="2019-08-29T09:28:42.012Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java多线程(一)--synchronized">
-<meta name="twitter:description" content="synchronized&amp;emsp;&amp;emsp;synchronized保证使用同一个对象锁的代码块在同一时间只能被一个线程执行。方法、对象、静态方法、class类锁都属于对象锁（Class对象是唯一的、全局的）方法：this对象对象：创建的对象静态方法：方法所在类的Class对象class类锁：Class对象 用法对象锁 代码块 &amp;emsp;&amp;emsp;如果只有一个obj对象，当线程1执行到sy">
+<meta name="twitter:title" content="FlutterDesktop(一)--创建桌面程序">
+<meta name="twitter:description" content="准备工作 更新Flutter到最新版  1$ flutter upgrade  添加环境变量以启用Desktop支持  变量名ENABLE_FLUTTER_DESKTOP 变量值为true 添加完成后Linux下可以使用echo $ENABLE_FLUTTER_DESKTOP查看是否添加成功,如果没有的话可以重启或者是使用source命令 如图   添加好之后最好再执行一次flutter doct">
+<meta name="twitter:image" content="https://blog.xhhold.com/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot01.png">
 
 
 
@@ -112,7 +119,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.xhhold.com/2019/03/11/Java多线程-一-synchronized/">
+  <link rel="canonical" href="https://blog.xhhold.com/2019/08/21/FlutterDesktop-一-创建桌面程序/">
 
 
 
@@ -122,7 +129,7 @@
   };
 </script>
 
-  <title>Java多线程(一)--synchronized | 灰灰のBLOG</title>
+  <title>FlutterDesktop(一)--创建桌面程序 | 灰灰のBLOG</title>
   
 
 
@@ -371,7 +378,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.xhhold.com/2019/03/11/Java多线程-一-synchronized/">
+    <link itemprop="mainEntityOfPage" href="https://blog.xhhold.com/2019/08/21/FlutterDesktop-一-创建桌面程序/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小灰灰">
@@ -388,7 +395,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java多线程(一)--synchronized
+          <h1 class="post-title" itemprop="name headline">FlutterDesktop(一)--创建桌面程序
 
               
             
@@ -414,7 +421,7 @@
                 
               
 
-              <time title="创建时间：2019-03-11 10:10:04" itemprop="dateCreated datePublished" datetime="2019-03-11T10:10:04+08:00">2019-03-11</time>
+              <time title="创建时间：2019-08-21 23:26:28" itemprop="dateCreated datePublished" datetime="2019-08-21T23:26:28+08:00">2019-08-21</time>
             
 
             
@@ -431,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-07-27 11:03:21" itemprop="dateModified" datetime="2019-07-27T11:03:21+08:00">2019-07-27</time>
+                <time title="修改时间：2019-08-29 17:28:42" itemprop="dateModified" datetime="2019-08-29T17:28:42+08:00">2019-08-29</time>
               
             
           </span>
@@ -448,7 +455,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/多线程/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
 
                 
                 
@@ -489,71 +496,54 @@
       
 
       
-        <h1 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h1><p>&emsp;&emsp;synchronized保证使用同一个对象锁的代码块在同一时间只能被一个线程执行。<code>方法</code>、<code>对象</code>、<code>静态方法</code>、<code>class类锁</code>都属于对象锁（Class对象是唯一的、全局的）<br><code>方法</code>：<code>this</code>对象<br><code>对象</code>：创建的对象<br><code>静态方法</code>：方法所在类的<code>Class对象</code><br><code>class类锁</code>：<code>Class对象</code></p>
-<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><h2 id="对象锁"><a href="#对象锁" class="headerlink" title="对象锁"></a>对象锁</h2><ul>
-<li><p>代码块</p>
-<p>&emsp;&emsp;如果只有一个obj对象，当线程1执行到synchronized代码块时，线程2想执行synchronized代码块的话要等obj的锁被释放，也就是线程1把synchronized代码块执行完成。因为这里使用的是同一个对象</p>
-</li>
+        <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ul>
+<li>更新Flutter到最新版</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Object obj=<span class="keyword">new</span> Object();</span><br><span class="line">  </span><br><span class="line"><span class="keyword">synchronized</span>(obj)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>  另一种写法是使用<code>this</code>，因为this指的是当前对象，所以和上面的意思一样</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter upgrade</span><br></pre></td></tr></table></figure>
 <ul>
-<li>方法<br>直接加在普通方法上和<code>synchronized(this)</code>意思一样，直接使用当前对象加锁</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="类锁"><a href="#类锁" class="headerlink" title="类锁"></a>类锁</h2><ul>
-<li><p>代码块<br>&emsp;&emsp;因为所有class都含有一个Class对]象，并且在程序运行时是唯一的，所以就相对于使用的是同一个对象进行加锁</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(Main.class)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>方法(<code>static</code>)<br>&emsp;&emsp;<code>synchronized</code>修饰普通方法加锁的是方法所在对象，而在静态方法里面使用加锁的是方法所在的类的class对象，所以效果等同于类锁的代码块形式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSomethong</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h1><ul>
-<li>不可中断<br>只能等待另一个线程释放锁之后才能获取锁</li>
-<li>可重入性质<br>同一线程的外层获取锁之后，内层也可以再次获得锁，而不需要等待释放锁。避免了外层获取而内层不能获取，然后外层又因为内层阻塞释放不了锁而形成的死锁<br>锁的粒度是<code>线程</code></li>
-</ul>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><ul>
-<li>可见性原理：解锁时把工作内存的共享变量值刷新到主内存，加锁时清空工作内存的共享变量值</li>
-<li>加锁和释放锁使用<code>monitor</code>来实现</li>
-<li>重入锁靠的加减<code>monitor</code><ul>
-<li>当获得锁之后，<code>monitor</code>+1，当内部代码再次获取锁时，<code>monitor</code>再+1</li>
-<li>内部代码执行完离开时，<code>monitor</code>-1，外层执行完成再次-1</li>
-<li>当<code>monitor</code>等于0时说明锁已经被释放了,不等于0则其它尝试获取锁的线程会阻塞</li>
-</ul>
-</li>
-<li><p>加锁使用<code>monitorenter</code>，释放使用<code>monitorexit</code><br>可以通过反编译代码看到</p>
+<li><p>添加环境变量以启用Desktop支持</p>
 <ul>
-<li>先使用<code>javac</code>编译下面的代码</li>
+<li>变量名<code>ENABLE_FLUTTER_DESKTOP</code></li>
+<li>变量值为<code>true</code></li>
+<li>添加完成后<code>Linux</code>下可以使用<code>echo $ENABLE_FLUTTER_DESKTOP</code>查看是否添加成功,如果没有的话可以重启或者是使用<code>source</code>命令</li>
+<li>如图<br><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot01.png" alt="screenshot01"></li>
 </ul>
 </li>
+<li><p>添加好之后最好再执行一次<code>flutter doctor</code>,出现如下图所示就说明启用成功了,并且执行<code>flutter devices</code>也会显示当前pc,由于我使用的Linux,所以显示的也是Linux<br><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot02.png" alt="screenshot02"></p>
+</li>
+<li><p>准备工作到这里也就完成了,接下来该创建一个项目来试试看了</p>
+</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="项目创建"><a href="#项目创建" class="headerlink" title="项目创建"></a>项目创建</h1><ul>
+<li>和创建普通的Flutter项目一样</li>
+</ul>
+<p><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot03.png" alt="screenshot03"></p>
 <ul>
-<li><p>然后使用<code>javap -verbose 类名</code>获得汇编代码（这里截取部分反编译后的代码）<br>可以看到<code>3:</code>处加锁使用的<code>monitorenter</code>以及<code>5:</code>处使用的<code>monitorexit</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">0: aload_0</span><br><span class="line">1: dup</span><br><span class="line">2: astore_1</span><br><span class="line">3: monitorenter</span><br><span class="line">4: aload_1</span><br><span class="line">5: monitorexit</span><br><span class="line">6: goto          14</span><br><span class="line">9: astore_2</span><br><span class="line">10: aload_1</span><br><span class="line">11: monitorexit</span><br><span class="line">12: aload_2</span><br><span class="line">13: athrow</span><br><span class="line">14: return</span><br></pre></td></tr></table></figure>
+<li>启用Desktop支持后,在选择设备下拉框里面就会出现当前系统的名称</li>
+</ul>
+<p><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot04.png" alt="screenshot04"></p>
+<ul>
+<li>如果这时候点击运行,就会出错,因为还没有配置相关文件</li>
+</ul>
+<p><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot05.png" alt="screenshot05"></p>
+<ul>
+<li>由于一些问题,所以在配置文件之前还需要修改一下dart代码,在<code>main.dart</code>里面加上下面这段,并且在<code>runApp(MyApp())</code>之前调用</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> _setTargetPlatformForDesktop() &#123;</span><br><span class="line">  TargetPlatform targetPlatform;</span><br><span class="line">  <span class="keyword">if</span> (Platform.isMacOS) &#123;</span><br><span class="line">    targetPlatform = TargetPlatform.iOS;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Platform.isLinux || Platform.isWindows) &#123;</span><br><span class="line">    targetPlatform = TargetPlatform.android;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (targetPlatform != <span class="keyword">null</span>) &#123;</span><br><span class="line">    debugDefaultTargetPlatformOverride = targetPlatform;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="项目配置"><a href="#项目配置" class="headerlink" title="项目配置"></a>项目配置</h1><p>&emsp;&emsp;这里只针对<code>Linux</code>平台介绍,<code>windows</code>和<code>macos</code>也差不多,只是分别需要装<code>visual studio</code>和<code>xcode</code>,剩下的直接复制粘贴<a href="https://github.com/google/flutter-desktop-embedding/" target="_blank" rel="noopener">flutter-desktop-embedding</a>里面的例子就行了</p>
+<ul>
+<li>先clone<code>flutter-desktop-embedding</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/google/flutter-desktop-embedding/</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>再把里面<code>example</code>的linux部分的文件完全复制到创建的项目的linux文件夹里面,如果没有则可以自行创建</p>
+</li>
+<li><p>这时再点击运行,就会出现运行成功的窗口了</p>
 </li>
 </ul>
-<h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><ul>
-<li>效率低<ul>
-<li>锁的释放情况少</li>
-<li>不可中断</li>
-<li>获取锁不能设置超时</li>
-</ul>
-</li>
-<li>不够灵活<ul>
-<li>加锁和释放时机单一</li>
-<li>每个锁只有单一的条件</li>
-</ul>
-</li>
-<li>无法知道锁的获取状态</li>
-</ul>
-<h1 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h1><ul>
-<li>锁对象不能为空，否则会报异常，因为加锁靠的是对象的<code>monitor</code></li>
-<li>作用域不要太大，否则可能效率低</li>
-<li>避免死锁</li>
-<li>使用推荐：并发包 &gt; synchronized &gt; Lock</li>
+<p><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot06.png" alt="screenshot06"></p>
+<ul>
+<li>目前是运行了一个桌面程序的Demo,更加详细的内容会在后面介绍</li>
 </ul>
 
       
@@ -607,7 +597,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
+            <a href="/tags/CPP/" rel="tag"># CPP</a>
+          
+            <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          
+            <a href="/tags/Dart/" rel="tag"># Dart</a>
           
         </div>
       
@@ -620,8 +614,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/21/Learn-OpenGL-一-简介与创建窗口/" rel="next" title="Learn OpenGL(一)--简介与创建窗口">
-                <i class="fa fa-chevron-left"></i> Learn OpenGL(一)--简介与创建窗口
+              <a href="/2019/08/04/Flutter文字渐变-二-Text闪烁效果/" rel="next" title="Flutter文字渐变(二)--Text闪烁效果">
+                <i class="fa fa-chevron-left"></i> Flutter文字渐变(二)--Text闪烁效果
               </a>
             
           </div>
@@ -630,8 +624,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/12/Java多线程-二-volatile/" rel="prev" title="Java多线程(二)--volatile">
-                Java多线程(二)--volatile <i class="fa fa-chevron-right"></i>
+              <a href="/2019/08/23/Flutter效果-三-滚动歌词/" rel="prev" title="Flutter效果(三)--滚动歌词">
+                Flutter效果(三)--滚动歌词 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -870,7 +864,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized"><span class="nav-number">1.</span> <span class="nav-text">synchronized</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用法"><span class="nav-number">2.</span> <span class="nav-text">用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象锁"><span class="nav-number">2.1.</span> <span class="nav-text">对象锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类锁"><span class="nav-number">2.2.</span> <span class="nav-text">类锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#性质"><span class="nav-number">3.</span> <span class="nav-text">性质</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原理"><span class="nav-number">4.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缺点"><span class="nav-number">5.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注意点"><span class="nav-number">6.</span> <span class="nav-text">注意点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目创建"><span class="nav-number">2.</span> <span class="nav-text">项目创建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目配置"><span class="nav-number">3.</span> <span class="nav-text">项目配置</span></a></li></ol></div>
             
 
           </div>
@@ -1040,7 +1034,7 @@
   
     <script>
   window.livereOptions = {
-    refer: '2019/03/11/Java多线程-一-synchronized/'
+    refer: '2019/08/21/FlutterDesktop-一-创建桌面程序/'
   };
   (function(d, s) {
     var j, e = d.getElementsByTagName(s)[0];
@@ -1398,6 +1392,43 @@
   
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
   
 
 

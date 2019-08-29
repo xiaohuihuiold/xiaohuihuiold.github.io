@@ -8,8 +8,62 @@
     <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>记录一些东西</description>
-    <pubDate>Tue, 20 Aug 2019 08:08:47 GMT</pubDate>
+    <pubDate>Thu, 29 Aug 2019 09:28:42 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>FlutterDesktop(二)--快捷键操作</title>
+      <link>https://blog.xhhold.com/2019/08/23/FlutterDesktop-%E4%BA%8C-%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%93%8D%E4%BD%9C/</link>
+      <guid>https://blog.xhhold.com/2019/08/23/FlutterDesktop-%E4%BA%8C-%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%93%8D%E4%BD%9C/</guid>
+      <pubDate>Fri, 23 Aug 2019 13:44:50 GMT</pubDate>
+      <description>
+      
+        
+        
+          &lt;p&gt;&amp;emsp;&amp;emsp;FlutterDesktop因为要在多个平台上运行,所以如果想自己实现快捷键操作的话还是有点麻烦的.最近写了个方便进行快捷键操作的库&lt;code&gt;shortcut_keys&lt;/code&gt;,能够在多个平台方便的使用快捷键&lt;/p&gt;
+&lt;h1 id=&quot;引入库&quot;
+        
+      
+      </description>
+      
+      <content:encoded><![CDATA[<p>&emsp;&emsp;FlutterDesktop因为要在多个平台上运行,所以如果想自己实现快捷键操作的话还是有点麻烦的.最近写了个方便进行快捷键操作的库<code>shortcut_keys</code>,能够在多个平台方便的使用快捷键</p><h1 id="引入库"><a href="#引入库" class="headerlink" title="引入库"></a>引入库</h1><ul><li>由于库没有发布到pub上,所以库的引入可以使用<code>git</code>的方式引入,经常使用这个方式的话还得记得常清理缓存,不然可能库更新的却不刷新</li></ul><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line"><span class="attr">  shortcut_keys:</span></span><br><span class="line"><span class="attr">    git:</span> <span class="attr">https://github.com/xiaohuihuiold/shortcut_keys</span></span><br></pre></td></tr></table></figure><ul><li>然后在页面里面导入库文件<code>shortcut_keys.dart</code></li></ul><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:shortcut_keys/shortcut_keys.dart'</span>;</span><br></pre></td></tr></table></figure><h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><ul><li>把要使用快捷键的区域用<code>ShortcutKeysListener</code>包裹起来,<code>needFocus</code>参数是指是否需要<code>FocusNode</code>来获取焦点,如果不需要的话,则默认在当前页面都能触发快捷键.<code>shortcutData</code>参数里面就是一个快捷键列表,可以包含普通的快捷键以及带鼠标的快捷键</li></ul><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ShortcutKeysListener(</span><br><span class="line">  needFocus: <span class="keyword">false</span>,</span><br><span class="line">  child: ... ,</span><br><span class="line">  shortcutData: [...] ,</span><br><span class="line">),</span><br></pre></td></tr></table></figure><ul><li>添加普通的快捷键以及事件,比如复制<code>ctrl c</code>,运行后鼠标在页面上,然后按下复制的快捷键应该就会看到打印了一条<code>复制</code>消息</li></ul><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">shortcutData: [</span><br><span class="line">  ShortcutData(</span><br><span class="line">    shortcuts: [</span><br><span class="line">      ShortcutKeys.CTRL_LEFT,</span><br><span class="line">      ShortcutKeys.C,</span><br><span class="line">    ],</span><br><span class="line">    trigger: () &#123;</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">'复制'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">  ),</span><br><span class="line">],</span><br></pre></td></tr></table></figure><ul><li>添加带鼠标的快捷键,因为鼠标操作还有坐标等数据,所以<code>trigger</code>里面的加上一个参数来接收详细数据.这里以按下<code>ctrl</code>同时鼠标在当前区域时会触发输出当前鼠标坐标的快捷键为例子,<code>event</code>就是鼠标事件的详细信息.</li></ul><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">shortcutData: [</span><br><span class="line">  ShortcutData(</span><br><span class="line">    shortcuts: [</span><br><span class="line">      ShortcutKeys.CTRL_LEFT,</span><br><span class="line">      ShortcutKeys.MOUSE_REGION,</span><br><span class="line">    ],</span><br><span class="line">    trigger: (event) &#123;</span><br><span class="line">      PointerHoverEvent point = event;</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">'<span class="subst">$&#123;point.position.dx&#125;</span>,<span class="subst">$&#123;point.position.dy&#125;</span>'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">  ),</span><br><span class="line">],</span><br></pre></td></tr></table></figure><ul><li>鼠标事件并不能多个一起使用.除了上面的在区域内触发,还有滚轮滚动<code>MOUSE_SCROLL</code>,左键单击<code>MOUSE_LEFT</code>等</li></ul><h1 id="开源地址"><a href="#开源地址" class="headerlink" title="开源地址"></a>开源地址</h1><p><a href="https://github.com/xiaohuihuiold/shortcut_keys" target="_blank" rel="noopener">https://github.com/xiaohuihuiold/shortcut_keys</a></p>]]></content:encoded>
+      
+      <comments>https://blog.xhhold.com/2019/08/23/FlutterDesktop-%E4%BA%8C-%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%93%8D%E4%BD%9C/#disqus_thread</comments>
+    </item>
+    
+    <item>
+      <title>Flutter效果(三)--滚动歌词</title>
+      <link>https://blog.xhhold.com/2019/08/23/Flutter%E6%95%88%E6%9E%9C-%E4%B8%89-%E6%BB%9A%E5%8A%A8%E6%AD%8C%E8%AF%8D/</link>
+      <guid>https://blog.xhhold.com/2019/08/23/Flutter%E6%95%88%E6%9E%9C-%E4%B8%89-%E6%BB%9A%E5%8A%A8%E6%AD%8C%E8%AF%8D/</guid>
+      <pubDate>Fri, 23 Aug 2019 13:41:38 GMT</pubDate>
+      <description>
+      
+      </description>
+      
+      <comments>https://blog.xhhold.com/2019/08/23/Flutter%E6%95%88%E6%9E%9C-%E4%B8%89-%E6%BB%9A%E5%8A%A8%E6%AD%8C%E8%AF%8D/#disqus_thread</comments>
+    </item>
+    
+    <item>
+      <title>FlutterDesktop(一)--创建桌面程序</title>
+      <link>https://blog.xhhold.com/2019/08/21/FlutterDesktop-%E4%B8%80-%E5%88%9B%E5%BB%BA%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8F/</link>
+      <guid>https://blog.xhhold.com/2019/08/21/FlutterDesktop-%E4%B8%80-%E5%88%9B%E5%BB%BA%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8F/</guid>
+      <pubDate>Wed, 21 Aug 2019 15:26:28 GMT</pubDate>
+      <description>
+      
+        
+        
+          &lt;h1 id=&quot;准备工作&quot;&gt;&lt;a href=&quot;#准备工作&quot; class=&quot;headerlink&quot; title=&quot;准备工作&quot;&gt;&lt;/a&gt;准备工作&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;更新Flutter到最新版&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;
+        
+      
+      </description>
+      
+      <content:encoded><![CDATA[<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ul><li>更新Flutter到最新版</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter upgrade</span><br></pre></td></tr></table></figure><ul><li><p>添加环境变量以启用Desktop支持</p><ul><li>变量名<code>ENABLE_FLUTTER_DESKTOP</code></li><li>变量值为<code>true</code></li><li>添加完成后<code>Linux</code>下可以使用<code>echo $ENABLE_FLUTTER_DESKTOP</code>查看是否添加成功,如果没有的话可以重启或者是使用<code>source</code>命令</li><li>如图<br><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot01.png" alt="screenshot01"></li></ul></li><li><p>添加好之后最好再执行一次<code>flutter doctor</code>,出现如下图所示就说明启用成功了,并且执行<code>flutter devices</code>也会显示当前pc,由于我使用的Linux,所以显示的也是Linux<br><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot02.png" alt="screenshot02"></p></li><li><p>准备工作到这里也就完成了,接下来该创建一个项目来试试看了</p></li></ul><h1 id="项目创建"><a href="#项目创建" class="headerlink" title="项目创建"></a>项目创建</h1><ul><li>和创建普通的Flutter项目一样</li></ul><p><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot03.png" alt="screenshot03"></p><ul><li>启用Desktop支持后,在选择设备下拉框里面就会出现当前系统的名称</li></ul><p><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot04.png" alt="screenshot04"></p><ul><li>如果这时候点击运行,就会出错,因为还没有配置相关文件</li></ul><p><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot05.png" alt="screenshot05"></p><ul><li>由于一些问题,所以在配置文件之前还需要修改一下dart代码,在<code>main.dart</code>里面加上下面这段,并且在<code>runApp(MyApp())</code>之前调用</li></ul><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> _setTargetPlatformForDesktop() &#123;</span><br><span class="line">  TargetPlatform targetPlatform;</span><br><span class="line">  <span class="keyword">if</span> (Platform.isMacOS) &#123;</span><br><span class="line">    targetPlatform = TargetPlatform.iOS;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Platform.isLinux || Platform.isWindows) &#123;</span><br><span class="line">    targetPlatform = TargetPlatform.android;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (targetPlatform != <span class="keyword">null</span>) &#123;</span><br><span class="line">    debugDefaultTargetPlatformOverride = targetPlatform;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="项目配置"><a href="#项目配置" class="headerlink" title="项目配置"></a>项目配置</h1><p>&emsp;&emsp;这里只针对<code>Linux</code>平台介绍,<code>windows</code>和<code>macos</code>也差不多,只是分别需要装<code>visual studio</code>和<code>xcode</code>,剩下的直接复制粘贴<a href="https://github.com/google/flutter-desktop-embedding/" target="_blank" rel="noopener">flutter-desktop-embedding</a>里面的例子就行了</p><ul><li>先clone<code>flutter-desktop-embedding</code></li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/google/flutter-desktop-embedding/</span><br></pre></td></tr></table></figure><ul><li><p>再把里面<code>example</code>的linux部分的文件完全复制到创建的项目的linux文件夹里面,如果没有则可以自行创建</p></li><li><p>这时再点击运行,就会出现运行成功的窗口了</p></li></ul><p><img src="/2019/08/21/FlutterDesktop-一-创建桌面程序/screenshot06.png" alt="screenshot06"></p><ul><li>目前是运行了一个桌面程序的Demo,更加详细的内容会在后面介绍</li></ul>]]></content:encoded>
+      
+      <comments>https://blog.xhhold.com/2019/08/21/FlutterDesktop-%E4%B8%80-%E5%88%9B%E5%BB%BA%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8F/#disqus_thread</comments>
+    </item>
     
     <item>
       <title>Flutter文字渐变(二)--Text闪烁效果</title>

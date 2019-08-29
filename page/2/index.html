@@ -92,18 +92,17 @@
 
 
 
-  <meta name="description" content="synchronized&amp;emsp;&amp;emsp;synchronized保证使用同一个对象锁的代码块在同一时间只能被一个线程执行。方法、对象、静态方法、class类锁都属于对象锁（Class对象是唯一的、全局的）方法：this对象对象：创建的对象静态方法：方法所在类的Class对象class类锁：Class对象 用法对象锁 代码块 &amp;emsp;&amp;emsp;如果只有一个obj对象，当线程1执行到sy">
-<meta name="keywords" content="Java">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Java多线程(一)--synchronized">
-<meta property="og:url" content="https://blog.xhhold.com/2019/03/11/Java多线程-一-synchronized/index.html">
+  <meta name="description" content="记录一些东西">
+<meta name="keywords" content="数据结构,算法,android,java,html5,css3,javascript,c,c++,c#;c++,linux,archlinux,arch,ue4,unity3d,android studio,kotlin">
+<meta property="og:type" content="website">
+<meta property="og:title" content="灰灰のBLOG">
+<meta property="og:url" content="https://blog.xhhold.com/page/2/index.html">
 <meta property="og:site_name" content="灰灰のBLOG">
-<meta property="og:description" content="synchronized&amp;emsp;&amp;emsp;synchronized保证使用同一个对象锁的代码块在同一时间只能被一个线程执行。方法、对象、静态方法、class类锁都属于对象锁（Class对象是唯一的、全局的）方法：this对象对象：创建的对象静态方法：方法所在类的Class对象class类锁：Class对象 用法对象锁 代码块 &amp;emsp;&amp;emsp;如果只有一个obj对象，当线程1执行到sy">
+<meta property="og:description" content="记录一些东西">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-27T03:03:21.703Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java多线程(一)--synchronized">
-<meta name="twitter:description" content="synchronized&amp;emsp;&amp;emsp;synchronized保证使用同一个对象锁的代码块在同一时间只能被一个线程执行。方法、对象、静态方法、class类锁都属于对象锁（Class对象是唯一的、全局的）方法：this对象对象：创建的对象静态方法：方法所在类的Class对象class类锁：Class对象 用法对象锁 代码块 &amp;emsp;&amp;emsp;如果只有一个obj对象，当线程1执行到sy">
+<meta name="twitter:title" content="灰灰のBLOG">
+<meta name="twitter:description" content="记录一些东西">
 
 
 
@@ -112,7 +111,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.xhhold.com/2019/03/11/Java多线程-一-synchronized/">
+  <link rel="canonical" href="https://blog.xhhold.com/page/2/">
 
 
 
@@ -122,7 +121,7 @@
   };
 </script>
 
-  <title>Java多线程(一)--synchronized | 灰灰のBLOG</title>
+  <title>灰灰のBLOG</title>
   
 
 
@@ -170,7 +169,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -354,9 +354,9 @@
           
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -371,7 +371,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.xhhold.com/2019/03/11/Java多线程-一-synchronized/">
+    <link itemprop="mainEntityOfPage" href="https://blog.xhhold.com/2019/02/15/Redis学习-三-数据类型/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小灰灰">
@@ -388,8 +388,10 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java多线程(一)--synchronized
-
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/15/Redis学习-三-数据类型/" class="post-title-link" itemprop="url">Redis学习(三)--数据类型</a>
               
             
           </h1>
@@ -414,7 +416,7 @@
                 
               
 
-              <time title="创建时间：2019-03-11 10:10:04" itemprop="dateCreated datePublished" datetime="2019-03-11T10:10:04+08:00">2019-03-11</time>
+              <time title="创建时间：2019-02-15 00:51:06" itemprop="dateCreated datePublished" datetime="2019-02-15T00:51:06+08:00">2019-02-15</time>
             
 
             
@@ -448,7 +450,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/多线程/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
 
                 
                 
@@ -463,13 +465,6 @@
           
           
 
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon">
-            <i class="fa fa-eye"></i>
-             阅读次数： 
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
-            </span>
           
 
           
@@ -489,73 +484,53 @@
       
 
       
-        <h1 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h1><p>&emsp;&emsp;synchronized保证使用同一个对象锁的代码块在同一时间只能被一个线程执行。<code>方法</code>、<code>对象</code>、<code>静态方法</code>、<code>class类锁</code>都属于对象锁（Class对象是唯一的、全局的）<br><code>方法</code>：<code>this</code>对象<br><code>对象</code>：创建的对象<br><code>静态方法</code>：方法所在类的<code>Class对象</code><br><code>class类锁</code>：<code>Class对象</code></p>
-<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><h2 id="对象锁"><a href="#对象锁" class="headerlink" title="对象锁"></a>对象锁</h2><ul>
-<li><p>代码块</p>
-<p>&emsp;&emsp;如果只有一个obj对象，当线程1执行到synchronized代码块时，线程2想执行synchronized代码块的话要等obj的锁被释放，也就是线程1把synchronized代码块执行完成。因为这里使用的是同一个对象</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Object obj=<span class="keyword">new</span> Object();</span><br><span class="line">  </span><br><span class="line"><span class="keyword">synchronized</span>(obj)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>  另一种写法是使用<code>this</code>，因为this指的是当前对象，所以和上面的意思一样</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>方法<br>直接加在普通方法上和<code>synchronized(this)</code>意思一样，直接使用当前对象加锁</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="类锁"><a href="#类锁" class="headerlink" title="类锁"></a>类锁</h2><ul>
-<li><p>代码块<br>&emsp;&emsp;因为所有class都含有一个Class对]象，并且在程序运行时是唯一的，所以就相对于使用的是同一个对象进行加锁</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(Main.class)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>方法(<code>static</code>)<br>&emsp;&emsp;<code>synchronized</code>修饰普通方法加锁的是方法所在对象，而在静态方法里面使用加锁的是方法所在的类的class对象，所以效果等同于类锁的代码块形式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSomethong</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h1><ul>
-<li>不可中断<br>只能等待另一个线程释放锁之后才能获取锁</li>
-<li>可重入性质<br>同一线程的外层获取锁之后，内层也可以再次获得锁，而不需要等待释放锁。避免了外层获取而内层不能获取，然后外层又因为内层阻塞释放不了锁而形成的死锁<br>锁的粒度是<code>线程</code></li>
-</ul>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><ul>
-<li>可见性原理：解锁时把工作内存的共享变量值刷新到主内存，加锁时清空工作内存的共享变量值</li>
-<li>加锁和释放锁使用<code>monitor</code>来实现</li>
-<li>重入锁靠的加减<code>monitor</code><ul>
-<li>当获得锁之后，<code>monitor</code>+1，当内部代码再次获取锁时，<code>monitor</code>再+1</li>
-<li>内部代码执行完离开时，<code>monitor</code>-1，外层执行完成再次-1</li>
-<li>当<code>monitor</code>等于0时说明锁已经被释放了,不等于0则其它尝试获取锁的线程会阻塞</li>
-</ul>
-</li>
-<li><p>加锁使用<code>monitorenter</code>，释放使用<code>monitorexit</code><br>可以通过反编译代码看到</p>
-<ul>
-<li>先使用<code>javac</code>编译下面的代码</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>然后使用<code>javap -verbose 类名</code>获得汇编代码（这里截取部分反编译后的代码）<br>可以看到<code>3:</code>处加锁使用的<code>monitorenter</code>以及<code>5:</code>处使用的<code>monitorexit</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">0: aload_0</span><br><span class="line">1: dup</span><br><span class="line">2: astore_1</span><br><span class="line">3: monitorenter</span><br><span class="line">4: aload_1</span><br><span class="line">5: monitorexit</span><br><span class="line">6: goto          14</span><br><span class="line">9: astore_2</span><br><span class="line">10: aload_1</span><br><span class="line">11: monitorexit</span><br><span class="line">12: aload_2</span><br><span class="line">13: athrow</span><br><span class="line">14: return</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h1><ul>
-<li>效率低<ul>
-<li>锁的释放情况少</li>
-<li>不可中断</li>
-<li>获取锁不能设置超时</li>
-</ul>
-</li>
-<li>不够灵活<ul>
-<li>加锁和释放时机单一</li>
-<li>每个锁只有单一的条件</li>
-</ul>
-</li>
-<li>无法知道锁的获取状态</li>
-</ul>
-<h1 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h1><ul>
-<li>锁对象不能为空，否则会报异常，因为加锁靠的是对象的<code>monitor</code></li>
-<li>作用域不要太大，否则可能效率低</li>
-<li>避免死锁</li>
-<li>使用推荐：并发包 &gt; synchronized &gt; Lock</li>
-</ul>
+        
+          
+            <p>
+              Redis 数据类型Redis支持五种数据类型
 
+字符串：String
+
+哈希：Hash
+
+列表：List
+
+集合：Set
+
+有序集合：Sorted Set
+
+
+
+
+
+
+类型
+简介
+特性
+
+
+
+
+String
+字符串
+二进制安全可以包含任何数据一个键最大储存512M
+
+
+Hash
+字典键值对集合
+一
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/15/Redis学习-三-数据类型/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
       
     </div>
 
@@ -571,74 +546,19 @@
       
     
     
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div></div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打赏</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.png" alt="小灰灰 微信支付">
-        <p>微信支付</p>
-      </div>
-    
-
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/alipay.jpg" alt="小灰灰 支付宝">
-        <p>支付宝</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
 
     
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag"># Java</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/02/21/Learn-OpenGL-一-简介与创建窗口/" rel="next" title="Learn OpenGL(一)--简介与创建窗口">
-                <i class="fa fa-chevron-left"></i> Learn OpenGL(一)--简介与创建窗口
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/12/Java多线程-二-volatile/" rel="prev" title="Java多线程(二)--volatile">
-                Java多线程(二)--volatile <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -648,20 +568,396 @@
   </article>
 
 
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.xhhold.com/2019/02/15/Redis学习-二-配置/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小灰灰">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="灰灰のBLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/15/Redis学习-二-配置/" class="post-title-link" itemprop="url">Redis学习(二)--配置</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-15 00:03:26" itemprop="dateCreated datePublished" datetime="2019-02-15T00:03:26+08:00">2019-02-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-27 11:03:21" itemprop="dateModified" datetime="2019-07-27T11:03:21+08:00">2019-07-27</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              Redis 配置
+配置文件：redis.conf
+
+命令
+获取配置CONFIG GET 配置项名
+
+127.0.0.1:6379&gt; CONFIG GET port1) "port"2) "6379"
+
+设置配置CONFIG SET 配置项名 新的值如果出现(error) ERR Unsuppo
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/15/Redis学习-二-配置/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.xhhold.com/2019/02/14/Redis学习-一-简介和安装/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小灰灰">
+      <meta itemprop="description" content="记录一些东西">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="灰灰のBLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/14/Redis学习-一-简介和安装/" class="post-title-link" itemprop="url">Redis学习(一)--简介和安装</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-14 15:24:39" itemprop="dateCreated datePublished" datetime="2019-02-14T15:24:39+08:00">2019-02-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-27 11:03:21" itemprop="dateModified" datetime="2019-07-27T11:03:21+08:00">2019-07-27</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+               ![redis logo](redis.jpeg) 
+
+Redis 简介Redis 是一个开源的使用ANSI C语言编写、支持网络、可基于内存也可以持久化的日志型、Key-Value数据库
+特点
+支持数据持久化
+支持key-value、list、set、zset、hash等数据结构
+支持maste
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/14/Redis学习-一-简介和安装/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-      <div id="lv-container" data-id="city" data-uid="MTAyMC8zODkyOC8xNTQ1Ng=="></div>
-    </div>
-
-  
-
-
 
         </div>
         
@@ -682,17 +978,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <div class="site-overview-wrap sidebar-panel">
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -860,23 +1147,6 @@
       </div>
 
       
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized"><span class="nav-number">1.</span> <span class="nav-text">synchronized</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用法"><span class="nav-number">2.</span> <span class="nav-text">用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象锁"><span class="nav-number">2.1.</span> <span class="nav-text">对象锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类锁"><span class="nav-number">2.2.</span> <span class="nav-text">类锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#性质"><span class="nav-number">3.</span> <span class="nav-text">性质</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原理"><span class="nav-number">4.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缺点"><span class="nav-number">5.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注意点"><span class="nav-number">6.</span> <span class="nav-text">注意点</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
 
       
 
@@ -1024,10 +1294,6 @@
   
 
   
-  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
-<script src="/js/src/post-details.js?v=6.7.0"></script>
-
-
 
   
 
@@ -1037,23 +1303,6 @@
 
 
   
-  
-    <script>
-  window.livereOptions = {
-    refer: '2019/03/11/Java多线程-一-synchronized/'
-  };
-  (function(d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') { return; }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-  })(document, 'script');
-</script>
-
-  
-
 
 
 
@@ -1396,6 +1645,14 @@
   
 
   
+  
+    
+      
+    
+      
+    
+      
+    
   
 
   
