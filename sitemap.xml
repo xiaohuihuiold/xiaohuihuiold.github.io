@@ -4,7 +4,7 @@
   <url>
     <loc>https://blog.xhhold.com/2019/10/08/LeetCode%E8%AE%B0%E5%BD%95-206-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/</loc>
     
-    <lastmod>2019-10-08T07:39:22.000Z</lastmod>
+    <lastmod>2019-10-08T08:12:09.000Z</lastmod>
     
   </url>
   
@@ -58,13 +58,6 @@
   </url>
   
   <url>
-    <loc>https://blog.xhhold.com/2019/02/15/Redis%E5%AD%A6%E4%B9%A0-%E4%B8%89-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</loc>
-    
-    <lastmod>2019-07-27T03:03:21.703Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.xhhold.com/2019/02/14/Redis%E5%AD%A6%E4%B9%A0-%E4%B8%80-%E7%AE%80%E4%BB%8B%E5%92%8C%E5%AE%89%E8%A3%85/</loc>
     
     <lastmod>2019-07-27T03:03:21.703Z</lastmod>
@@ -72,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://blog.xhhold.com/2019/02/15/Redis%E5%AD%A6%E4%B9%A0-%E4%BA%8C-%E9%85%8D%E7%BD%AE/</loc>
+    <loc>https://blog.xhhold.com/2019/02/15/Redis%E5%AD%A6%E4%B9%A0-%E4%B8%89-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</loc>
     
     <lastmod>2019-07-27T03:03:21.703Z</lastmod>
     
@@ -86,7 +79,7 @@
   </url>
   
   <url>
-    <loc>https://blog.xhhold.com/2019/03/11/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E4%B8%80-synchronized/</loc>
+    <loc>https://blog.xhhold.com/2019/02/15/Redis%E5%AD%A6%E4%B9%A0-%E4%BA%8C-%E9%85%8D%E7%BD%AE/</loc>
     
     <lastmod>2019-07-27T03:03:21.703Z</lastmod>
     
@@ -94,6 +87,13 @@
   
   <url>
     <loc>https://blog.xhhold.com/2019/03/12/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E4%BA%8C-volatile/</loc>
+    
+    <lastmod>2019-07-27T03:03:21.703Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.xhhold.com/2019/03/11/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E4%B8%80-synchronized/</loc>
     
     <lastmod>2019-07-27T03:03:21.703Z</lastmod>
     

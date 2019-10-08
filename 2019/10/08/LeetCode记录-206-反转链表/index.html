@@ -100,7 +100,7 @@
 <meta property="og:site_name" content="灰灰のBLOG">
 <meta property="og:description" content="题目描述206. 反转链表反转一个单链表。 示例 输入:     1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL   输出:     5-&amp;gt;4-&amp;gt;3-&amp;gt;2-&amp;gt;1-&amp;gt;NULL   进阶: 你可以迭代或递归地反转链表。你能否用两种方法解决这道题？  题解迭代方式&amp;emsp;&amp;emsp;迭代的方式相对简单,就是循环把第一个Node放到第二个Node后面">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-08T07:39:22.000Z">
+<meta property="og:updated_time" content="2019-10-08T08:12:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LeetCode记录--206.反转链表">
 <meta name="twitter:description" content="题目描述206. 反转链表反转一个单链表。 示例 输入:     1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL   输出:     5-&amp;gt;4-&amp;gt;3-&amp;gt;2-&amp;gt;1-&amp;gt;NULL   进阶: 你可以迭代或递归地反转链表。你能否用两种方法解决这道题？  题解迭代方式&amp;emsp;&amp;emsp;迭代的方式相对简单,就是循环把第一个Node放到第二个Node后面">
@@ -414,7 +414,7 @@
                 
               
 
-              <time title="创建时间：2019-10-08 11:52:13 / 修改时间：15:39:22" itemprop="dateCreated datePublished" datetime="2019-10-08T11:52:13+08:00">2019-10-08</time>
+              <time title="创建时间：2019-10-08 11:52:13 / 修改时间：16:12:09" itemprop="dateCreated datePublished" datetime="2019-10-08T11:52:13+08:00">2019-10-08</time>
             
 
             
@@ -537,6 +537,13 @@
 <p>执行用时: <code>8 ms</code>, 在所有 C 提交中击败了<code>59.94%</code>的用户<br>内存消耗: <code>7.7 MB</code>, 在所有 C 提交中击败了<code>5.08%</code>的用户</p>
 </blockquote>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct ListNode* <span class="title">reverseList</span><span class="params">(struct ListNode* head)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">prev</span> = <span class="title">NULL</span>;</span></span><br><span class="line">    <span class="keyword">while</span>(head)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">next</span> = <span class="title">head</span>-&gt;<span class="title">next</span>;</span></span><br><span class="line">        head-&gt;next = prev;</span><br><span class="line">        prev = head;</span><br><span class="line">        head = next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> prev;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="递归方式-1"><a href="#递归方式-1" class="headerlink" title="递归方式"></a>递归方式</h3><ul>
+<li>C语言</li>
+</ul>
+<blockquote>
+<p>执行用时: <code>8 ms</code>, 在所有 C 提交中击败了<code>59.94%</code>的用户<br>内存消耗: <code>7.7 MB</code>, 在所有 C 提交中击败了<code>5.08%</code>的用户</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct ListNode *<span class="title">reverseList</span><span class="params">(struct ListNode *head)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (head == <span class="literal">NULL</span> || head-&gt;next == <span class="literal">NULL</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">next</span> = <span class="title">head</span>-&gt;<span class="title">next</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">newHead</span> = <span class="title">reverseList</span>(<span class="title">next</span>);</span></span><br><span class="line">  next-&gt;next = head;</span><br><span class="line">  head-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">  <span class="keyword">return</span> newHead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -864,7 +871,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">1.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代方式"><span class="nav-number">2.1.</span> <span class="nav-text">迭代方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#图示"><span class="nav-number">2.1.1.</span> <span class="nav-text">图示</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归方式"><span class="nav-number">2.2.</span> <span class="nav-text">递归方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提交代码"><span class="nav-number">3.</span> <span class="nav-text">提交代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代方式-1"><span class="nav-number">3.1.</span> <span class="nav-text">迭代方式</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">1.1.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代方式"><span class="nav-number">2.1.</span> <span class="nav-text">迭代方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#图示"><span class="nav-number">2.1.1.</span> <span class="nav-text">图示</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归方式"><span class="nav-number">2.2.</span> <span class="nav-text">递归方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提交代码"><span class="nav-number">3.</span> <span class="nav-text">提交代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代方式-1"><span class="nav-number">3.1.</span> <span class="nav-text">迭代方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归方式-1"><span class="nav-number">3.2.</span> <span class="nav-text">递归方式</span></a></li></ol></li></ol></div>
             
 
           </div>
