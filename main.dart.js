@@ -63924,14 +63924,14 @@ $S:387}
 K.my.prototype={
 aA:function(){return new K.LR(P.u(t.S,t.T),C.m)}}
 K.LR.prototype={
-vz:function(a){var s=0,r=P.ag(t.H),q=this,p
+vz:function(a){var s=0,r=P.ag(t.H),q=this,p,o
 var $async$vz=P.aa(function(b,c){if(b===1)return P.ad(c,r)
 while(true)switch(s){case 0:s=2
 return P.an(L.aj5("get","/data/manifest.json",t.Mc),$async$vz)
-case 2:p=q.e=c.d
-if(p!=null)p.stS("/data")
-p=q.e
-P.lA(p==null?null:p.d)
+case 2:p=c
+o=q.e=p.d
+if(o!=null)o.stS("/data")
+P.lA(p)
 if(q.c!=null)q.je(new K.a7U())
 return P.ae(null,r)}})
 return P.af($async$vz,r)},
