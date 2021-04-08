@@ -3,12 +3,17 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "assets/AssetManifest.json": "99914b932bd37a50b983c5e7c90ae93b",
-"assets/FontManifest.json": "7b2a36307916a9721811788013e65289",
+  "assets/AssetManifest.json": "b739d18b47f7f6cd8dcb4f84dfc75394",
+"assets/FontManifest.json": "62f2abae3b3517a0212a77fc29f75148",
+"assets/fonts/Alibaba-PuHuiTi-Bold.ttf": "38edfe1889c8ab6ad5c238d91aefa22b",
+"assets/fonts/Alibaba-PuHuiTi-Heavy.ttf": "c3a51600ca6f01be3192e72fcfa8e4ac",
+"assets/fonts/Alibaba-PuHuiTi-Light.ttf": "67bc9f4f94dcd785a1875161666ae7ca",
+"assets/fonts/Alibaba-PuHuiTi-Medium.ttf": "9c3c7ede7aa81c3758ee84b606921e8d",
+"assets/fonts/Alibaba-PuHuiTi-Regular.ttf": "8d591595ec48e06178ace5eddfcee21c",
 "assets/fonts/MaterialIcons-Regular.otf": "4e6447691c9509f7acdbf8a931a85ca1",
 "assets/NOTICES": "a1c5fc795009c5f74809a8b454b36d35",
 "CNAME": "8eb73a89db135455b39405d3a25757ea",
-"data/manifest.json": "4d659d65423fe3ce8ea478a93c45dce8",
+"data/manifest.json": "217f25b3592e9e5a19f7407cd521aadc",
 "data/posts/0/assets/flutter.png": "96e752610906ba2a93c65f8abe1645f1",
 "data/posts/0/flutter.png": "96e752610906ba2a93c65f8abe1645f1",
 "data/posts/0/helloworld.md": "a5d61696507e33057e4b9cd47e6318ad",
@@ -17,9 +22,9 @@ const RESOURCES = {
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
-"index.html": "4196414c2021d903c57f376cf225af6b",
-"/": "4196414c2021d903c57f376cf225af6b",
-"main.dart.js": "57ed575ddec9b49e054406b1a088224e",
+"index.html": "e9130d99e7a48ac236baceb5bf10d6a5",
+"/": "e9130d99e7a48ac236baceb5bf10d6a5",
+"main.dart.js": "f7e8a8e36386f5ffdffab333609fe777",
 "manifest.json": "ba2ca419d7be524a520276192af4d9ba",
 "version.json": "f7f4b2e68215a1b05de45dfc65727dcf"
 };
